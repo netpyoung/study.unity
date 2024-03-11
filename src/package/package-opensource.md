@@ -1,0 +1,18 @@
+# package-opensource
+
+- [netpyoung](https://github.com/netpyoung/)
+  - [com.netpyoung.webp](https://github.com/netpyoung/unity.webp)
+  - [com.netpyoung.libsodium](https://github.com/netpyoung/unity.libsodium)
+  - [com.netpyoung.sqlcipher4unity3d](https://github.com/netpyoung/SqlCipher4Unity3D)
+- [mob-sakai](https://github.com/mob-sakai/)
+  - [com.coffee.unmask](https://github.com/mob-sakai/UnmaskForUGUI)
+  - [com.coffee.composite-canvas-renderer](https://github.com/mob-sakai/CompositeCanvasRenderer)
+  - [com.coffee.ui-effect](https://github.com/mob-sakai/UIEffect)
+  - [com.coffee.ui-particle](https://github.com/mob-sakai/ParticleEffectForUGUI)
+  - [com.coffee.softmask-for-ugui](https://github.com/mob-sakai/SoftMaskForUGUI)
+- [Elringus](https://github.com/elringus)
+  - [com.elringus.spriteglow](https://github.com/elringus/sprite-glow)
+  - [com.elringus.spritedicing](https://github.com/Elringus/SpriteDicing)
+- [yasirkula](https://github.com/yasirkula)
+  - [com.yasirkula.ingamedebugconsole](https://github.com/yasirkula/UnityIngameDebugConsole)
+  - [com.yasirkula.assetusagedetector](https://github.com/yasirkula/UnityAssetUsageDetector)
