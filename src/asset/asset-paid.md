@@ -56,10 +56,6 @@
 | [NGUI: Next-Gen UI](https://assetstore.unity.com/packages/tools/gui/ngui-next-gen-ui-2413) |     |
 
 
-## Audio
-
-- <https://danikog.github.io/GameAudioTable/>
-
 ## 환경 3D
 
 |                                                                                                                                                                                                    |     |

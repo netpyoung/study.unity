@@ -16,3 +16,5 @@
 - [yasirkula](https://github.com/yasirkula)
   - [com.yasirkula.ingamedebugconsole](https://github.com/yasirkula/UnityIngameDebugConsole)
   - [com.yasirkula.assetusagedetector](https://github.com/yasirkula/UnityAssetUsageDetector)
+- [Siccity](https://github.com/Siccity)
+  - [com.github.siccity.xnode](https://github.com/Siccity/xNode)

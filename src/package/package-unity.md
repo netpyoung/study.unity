@@ -42,6 +42,13 @@
   - [com.unity.cinemachine](https://github.com/needle-mirror/com.unity.cinemachine)
   - [com.unity.meshsync](https://github.com/needle-mirror/com.unity.meshsync)
 
+[com.unity.lookdevstudio](https://github.com/Unity-Technologies/lookdev-studio/)
+  - <https://blog.unity.com/kr/engine-platform/try-the-new-lookdev-studio-prototype-today>
+[com.unity.probuilder](https://github.com/Unity-Technologies/com.unity.probuilder)
+[com.unity.polybrush](https://github.com/needle-mirror/com.unity.polybrush)
+- <https://github.com/Unity-Technologies/UnityDataTools>
+- <https://github.com/Unity-Technologies/FlatSharp>
+
 
 ## xxx
 
