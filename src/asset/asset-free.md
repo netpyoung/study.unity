@@ -16,6 +16,8 @@
 | [Line Ending Fixer](https://assetstore.unity.com/packages/tools/utilities/line-ending-fixer-229464)                   |                                                                                                                                                                                                          |
 | [Clean Empty Directories](https://assetstore.unity.com/packages/tools/utilities/clean-empty-directories-24284)        | [git](https://github.com/muscly/UnityCleanEmptyDirectories), other [1](https://gist.github.com/liortal53/780075ddb17f9306ae32), [2](https://gist.github.com/mrwellmann/c9c6bc416143a58d734077ffe57179a3) |
 
+[HDRI Pack](https://assetstore.unity.com/packages/2d/textures-materials/sky/hdri-pack-72511)
+
 ## Script
 
 |            |                                                          |

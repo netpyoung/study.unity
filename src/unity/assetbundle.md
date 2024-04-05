@@ -581,14 +581,16 @@ client patch download
 
 ---
 
-# ref
-* [BuildingAssetBundles in 5.x](http://docs.unity3d.com/Manual/BuildingAssetBundles5x.html)
-* [wiki - yaml](https://en.wikipedia.org/wiki/YAML)
-* [Unite 2014 - New AssetBundle Build System in Unity 5](https://www.youtube.com/watch?v=gVUgF2ZHveo)
-* [WORKING WITH ASSET BUNDLES IN UNITY 5](http://unity3d.com/learn/tutorials/modules/intermediate/live-training-archive/unity5-asset-bundles)
-* [Live Training April 29th, 2015: Working with Asset Bundles in Unity 5](https://www.youtube.com/watch?v=6D9AbQodeVg)
-* [Per Asset Versioning with Unity Asset Bundles
-](http://blog.juiceboxmobile.com/2013/06/19/per-asset-versioning-with-unity-asset-bundles/)
+## Ref
+
+- [BuildingAssetBundles in 5.x](http://docs.unity3d.com/Manual/BuildingAssetBundles5x.html)
+- [wiki - yaml](https://en.wikipedia.org/wiki/YAML)
+- [Unite 2014 - New AssetBundle Build System in Unity 5](https://www.youtube.com/watch?v=gVUgF2ZHveo)
+- [WORKING WITH ASSET BUNDLES IN UNITY 5](http://unity3d.com/learn/tutorials/modules/intermediate/live-training-archive/unity5-asset-bundles)
+- [Live Training April 29th, 2015: Working with Asset Bundles in Unity 5](https://www.youtube.com/watch?v=6D9AbQodeVg)
+- [Per Asset Versioning with Unity Asset Bundles](http://blog.juiceboxmobile.com/2013/06/19/per-asset-versioning-with-unity-asset-bundles/)
+- https://qiita.com/k7a/items/d27640ac0276214fc850
+- [AssetBundles-Dependencies](https://docs.unity3d.com/Manual/AssetBundles-Dependencies.html)
 
 ---
 

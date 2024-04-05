@@ -45,3 +45,7 @@ T: Time(define 1 day to be 1, then 1 day = 24 hours = 1440 minutes... )
 
 (G >= M): G = G
 (G <  M): G = G + (R / T)
+
+
+- <https://learn.microsoft.com/en-us/rest/api/playfab/economy/inventory/add-inventory-items?view=playfab-rest#request-body>
+  - IdempotencyId
