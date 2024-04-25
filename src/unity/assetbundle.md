@@ -594,4 +594,8 @@ client patch download
 
 ---
 
-EOS
+
+## Etc
+https://www.twblogs.net/a/5c2a27f0bd9eee01606d384a
+https://tsubakit1.hateblo.jp/entry/2016/07/20/235900
+https://zhuanlan.zhihu.com/p/369264807

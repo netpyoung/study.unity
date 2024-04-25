@@ -32,6 +32,13 @@
 
 [Mesh Animator - Animate massive crowds](https://assetstore.unity.com/packages/tools/animation/mesh-animator-animate-massive-crowds-26009)
 
+- webview
+  - webview 플러그인들은 여러가지 있는데 vuplex가 비싸지만 깔끔
+  - https://store.vuplex.com/cart/
+    - 3D WebView for Windows and macOS $149.99
+    - 3D WebView for Android $189.99
+    - 3D WebView for iOS $189.99
+    - You save: $79.50 => $450.47
 
 ## 유틸 - 애매함
 
