@@ -19,6 +19,9 @@
 [HDRI Pack](https://assetstore.unity.com/packages/2d/textures-materials/sky/hdri-pack-72511)
 [Texture Channel Packer Pro](https://assetstore.unity.com/packages/tools/utilities/texture-channel-packer-pro-211507)
 
+[Auto Letterbox](https://assetstore.unity.com/packages/tools/camera/auto-letterbox-56814)
+[Colorblind Effect](https://assetstore.unity.com/packages/vfx/shaders/fullscreen-camera-effects/colorblind-effect-76360)
+
 
 ## Script
 

@@ -40,6 +40,10 @@
     - 3D WebView for iOS $189.99
     - You save: $79.50 => $450.47
 
+
+[2DxFX: 2D Sprite FX](https://assetstore.unity.com/packages/tools/sprite-management/2dxfx-2d-sprite-fx-42566)
+
+
 ## 유틸 - 애매함
 
 |                                                                                                                                   |     |
