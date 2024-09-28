@@ -1,5 +1,22 @@
 # 02002_resource
 
+# Naming
+
+- nameing convention : snake_case
+
+## illust
+- illust_*.png
+
+## import
+## 아이콘 : icon_
+## ui 아틀라스 : atlas_
+
+## fx naming
+
+- animator based : fx_a_
+- particle based : fx_p_
+- spine based : fx_s_
+
 ## sound
 
 ### bgm
@@ -54,3 +71,57 @@
 - Max Size : 2048
 - format : RGB Compressed PVRTC 4 bits | RGBA Compressed PVRTC 4 bits (if alpha)
 - Compressor Quality : Normal
+
+## https://docs.unity3d.com/2017.1/Documentation/Manual/SpriteAtlas.html
+
+# Planner
+
+- working datasheet
+- git commit
+- chatbot : `build gamedb|locale command`
+- relaunch game application
+
+## issue flow
+
+- Planner <-issue-> designer
+- Planner <-*-> ui
+- Planner -*-> client
+- Planner -issue-> server
+- Planner <-*- client
+- Planner -build-> chatbot
+
+
+# Client
+
+- working code
+- git commit
+ - commit hook
+ - static analysis && check coding standard && unit test
+
+
+## changelog
+
+- https://pypi.python.org/pypi/gitchangelog
+
+## static analysis
+
+- https://www.sonarqube.org/
+- https://www.jetbrains.com/help/resharper/Code_Analysis__Code_Inspections.html
+
+## codestyle
+
+- https://www.jetbrains.com/resharper/features/code_formatting.html
+
+## unit test
+
+- vs enterprise: https://docs.microsoft.com/en-us/visualstudio/test/getting-started-with-unit-testing
+- NCrunch : http://www.ncrunch.net/
+
+## ui test
+
+- http://appium.io/
+- https://bitbar.com/testing/pricing/public-cloud/
+
+## ci
+
+- https://docs.unity3d.com/ScriptReference/AssetPostprocessor.html
