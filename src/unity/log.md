@@ -22,6 +22,8 @@
 - [github: com.unity.logging](https://github.com/needle-mirror/com.unity.logging)
 - [CHANGELOG.md](https://github.com/needle-mirror/com.unity.logging/blob/master/CHANGELOG.md)
 - [HideInStackTrace ](https://docs.unity3d.com/Packages/com.unity.logging@1.3/api/Unity.Logging.HideInStackTrace.html)
+  - https://github.com/needle-mirror/com.unity.logging/blob/master/Runtime/Sinks/UnityEditorConsoleSink.cs
+  - https://github.com/Unity-Technologies/UnityCsReference/blob/master/Editor/Mono/ConsoleWindow.cs
 
 ### asset
 
