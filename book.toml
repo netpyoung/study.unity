@@ -6,7 +6,12 @@ language = "kr"
 multilingual = false
 src = "src"
 
+[preprocessor.toc]
+command = "mdbook-toc"
+renderer = ["html"]
+
 [output.html]
+additional-css = ["custom.css"]
 no-section-label = true
 site-url = "/study.unity/"
 git-repository-url = "https://github.com/netpyoung/study.unity"
