@@ -30,6 +30,7 @@
         <link rel="stylesheet" href="ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom.css">
 
     </head>
     <body class="sidebar-visible no-js">
@@ -89,7 +90,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="Index.html">들어가며</a></li><li class="chapter-item expanded affix "><li class="part-title">Package</li><li class="chapter-item expanded "><a href="package/package-unity.html">package-unity</a></li><li class="chapter-item expanded "><a href="package/package-opensource.html">package-opensource</a></li><li class="chapter-item expanded affix "><li class="part-title">에셋</li><li class="chapter-item expanded "><a href="asset/asset-paid.html">에셋-유료</a></li><li class="chapter-item expanded "><a href="asset/asset-free.html">에셋-무료</a></li><li class="chapter-item expanded "><a href="asset/audio/audio.html">Audio</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="asset/audio/fmod.html">FMOD</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">디버깅</li><li class="chapter-item expanded "><a href="debugging/adb.html">ADB</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="Index.html">들어가며</a></li><li class="chapter-item expanded affix "><li class="part-title">Unity</li><li class="chapter-item expanded "><a href="unity/assetbundle.html">AssetBundle</a></li><li class="chapter-item expanded "><a href="unity/accelerator.html">Accelerator</a></li><li class="chapter-item expanded "><a href="unity/attribute.html">Attribute</a></li><li class="chapter-item expanded affix "><li class="part-title">Package</li><li class="chapter-item expanded "><a href="package/package.html">package</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="package/package-unity.html">package-unity</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="package/package-unity/scriptablebuildpipeline-sbp.html">com.unity.scriptablebuildpipeline</a></li><li class="chapter-item expanded "><a href="package/package-unity/logging.html">com.unity.logging</a></li></ol></li><li class="chapter-item expanded "><a href="package/package-opensource.html">package-opensource</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">에셋</li><li class="chapter-item expanded "><a href="asset/asset-paid.html">에셋-유료</a></li><li class="chapter-item expanded "><a href="asset/asset-free.html">에셋-무료</a></li><li class="chapter-item expanded "><a href="asset/audio/audio.html">Audio</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="asset/audio/fmod.html">FMOD</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Etc</li><li class="chapter-item expanded "><a href="etc/compile-warning.html">compile-warning</a></li><li class="chapter-item expanded affix "><li class="part-title">디버깅</li><li class="chapter-item expanded "><a href="debugging/adb.html">ADB</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -185,6 +186,818 @@
 <li>Documented here are the dark, scientific secrets of the Unity Engine.</li>
 </ul>
 </li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="assetbundle"><a class="header" href="#assetbundle">Assetbundle</a></h1>
+<h2 id="목차"><a class="header" href="#목차">목차</a></h2>
+<ul>
+<li><a href="unity/assetbundle.html#assetbundle%EC%9D%B4%EB%9E%80">AssetBundle이란</a></li>
+<li><a href="unity/assetbundle.html#%EB%B0%A9%EC%8B%9D">방식</a>
+<ul>
+<li><a href="unity/assetbundle.html#%EC%98%88%EC%A0%84%EB%B0%A9%EC%8B%9D-unity-4x">예전방식 (Unity 4.x)</a></li>
+<li><a href="unity/assetbundle.html#%ED%98%84%EC%9E%AC%EB%B0%A9%EC%8B%9D-unity-5x--">현재방식 (Unity 5.x ~ )</a>
+<ul>
+<li><a href="unity/assetbundle.html#%ED%98%84%EC%9E%AC%EB%B0%A9%EC%8B%9D-%EB%AC%B8%EC%A0%9C">현재방식 문제</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="unity/assetbundle.html#%EA%B5%AC%EC%A1%B0">구조</a>
+<ul>
+<li><a href="unity/assetbundle.html#assetbundlemanifest">AssetBundleManifest</a></li>
+<li><a href="unity/assetbundle.html#manifest">.manifest</a></li>
+<li><a href="unity/assetbundle.html#assetbundle%EC%9D%84-%EB%8B%A4%EC%8B%9C-%EB%B9%8C%EB%93%9C%ED%95%98%EB%8A%94-%EA%B2%BD%EC%9A%B0">AssetBundle을 다시 빌드하는 경우</a></li>
+<li><a href="unity/assetbundle.html#lz4-%EC%A7%80%EC%9B%90">Lz4 지원</a></li>
+</ul>
+</li>
+<li><a href="unity/assetbundle.html#unitywebrequestuwr%EC%99%80-caching">UnityWebRequest(UWR)와 Caching</a></li>
+<li><a href="unity/assetbundle.html#-name%EC%9D%84-%EB%BA%90%EC%9D%84%EC%8B%9C-%EB%B9%8C%EB%93%9C%EB%90%98%EB%8A%94-bundle%EC%9D%98-%EC%82%AD%EC%A0%9C%EB%8A%94-%EC%9D%BC%EC%96%B4%EB%82%98%EC%A7%80-%EC%95%8A%EC%95%98%EB%8B%A4">% name을 뺐을시 빌드되는 bundle의 삭제는 일어나지 않았다.</a></li>
+<li><a href="unity/assetbundle.html#manifest-1">Manifest</a></li>
+<li><a href="unity/assetbundle.html#single-manifest-file">Single manifest file</a></li>
+<li><a href="unity/assetbundle.html#buildassetbundleoptions">BuildAssetBundleOptions</a></li>
+<li><a href="unity/assetbundle.html#assetbundlebuild">AssetBundleBuild</a></li>
+<li><a href="unity/assetbundle.html#assetbundlemanifest-1">AssetBundleManifest</a></li>
+<li><a href="unity/assetbundle.html#%EC%97%90%EC%85%8B%EB%B2%88%EB%93%A4-%EB%B9%8C%EB%93%9C">에셋번들 빌드</a></li>
+<li><a href="unity/assetbundle.html#amanifest">a.manifest</a></li>
+<li><a href="unity/assetbundle.html#manifest-2">Manifest</a></li>
+<li><a href="unity/assetbundle.html#assetbundlemanifest-2">AssetBundleManifest</a></li>
+<li><a href="unity/assetbundle.html#assetbundle-hash%EC%9D%98-%EA%B5%AC%EC%84%B1-%EC%9A%94%EC%86%8C">assetbundle hash의 구성 요소</a>
+<ul>
+<li><a href="unity/assetbundle.html#crccyclic-redundancy-check">CRC(Cyclic redundancy check)</a></li>
+<li><a href="unity/assetbundle.html#ex-%ED%8C%8C%EC%9D%BC-%EB%82%B4%EC%9A%A9-%EB%B3%80%EA%B2%BD">ex) 파일 내용 변경</a></li>
+<li><a href="unity/assetbundle.html#ex-%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%EC%BD%94%EB%93%9C-%EB%B3%80%EA%B2%BD">ex) 스크립트 코드 변경</a></li>
+</ul>
+</li>
+<li><a href="unity/assetbundle.html#%ED%95%98%EC%9D%B4%EC%96%B4%EB%9D%BC%ED%82%A4-%EA%B2%80%EC%83%89-%ED%95%84%ED%84%B0">하이어라키 검색 필터</a></li>
+<li><a href="unity/assetbundle.html#%EC%A3%BC%EC%9D%98%EC%82%AC%ED%95%AD">주의사항</a>
+<ul>
+<li><a href="unity/assetbundle.html#ref">Ref</a></li>
+<li><a href="unity/assetbundle.html#etc">Etc</a></li>
+<li><a href="unity/assetbundle.html#%EC%85%B0%EC%9D%B4%EB%8D%94">셰이더</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="assetbundle이란"><a class="header" href="#assetbundle이란">AssetBundle이란</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>.</th><th>.</th></tr></thead><tbody>
+<tr><td>Asset</td><td>prefab, scene, texture, material, animation, audio, script ...</td></tr>
+<tr><td>AssetBundle</td><td>group of assets in single file.</td></tr>
+</tbody></table>
+</div><br />
+<div class="table-wrapper"><table><thead><tr><th>버전</th><th>특징</th><th>압축</th></tr></thead><tbody>
+<tr><td>2018.4+</td><td>Scriptable Build Pipeline</td><td>lzma, lz4</td></tr>
+<tr><td>2018.2+</td><td>Addressables</td><td></td></tr>
+<tr><td>5.3</td><td>lz4 지원</td><td>lzma, lz4</td></tr>
+<tr><td>5.0</td><td>AssetBundleManifest 도입</td><td>lzma</td></tr>
+<tr><td>4.x</td><td>Push/PopAssetDependencies</td><td>lzma</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>에셋번들을 다룰때에는 의존성(Dependency)관리가 관건</li>
+</ul>
+<h2 id="방식"><a class="header" href="#방식">방식</a></h2>
+<h3 id="예전방식-unity-4x"><a class="header" href="#예전방식-unity-4x">예전방식 (Unity 4.x)</a></h3>
+<p>에셋번들 의존성 관리를 Push/Pop으로 수동으로 관리를 했었다.</p>
+<pre><code class="language-cs">BuildPipeline.PushAssetDependencies();
+BuildPipeline.BuildAssetBundle(AssetDatabase.LoadMainAssetAtPath("Assets/ShadersList.prefab"), null, "WebPlayer/ShadersList.unity3d", options);
+BuildPipeline.PopAssetDependencies();
+</code></pre>
+<h3 id="현재방식-unity-5x--"><a class="header" href="#현재방식-unity-5x--">현재방식 (Unity 5.x ~ )</a></h3>
+<ul>
+<li>알아서 의존성 관리를 해준다.</li>
+<li>번들검색
+<ul>
+<li>프로젝트 윈도우(Ctrl + F5)에서 bundle 검색시 검색창에 <code>b:</code>를 입력</li>
+</ul>
+</li>
+<li>번들 지정
+<ul>
+<li>수동은 인스펙터 하단에 <code>Asset Labels &gt; AssetBundle [name] [variant]</code></li>
+<li>코드지정은 <code>AssetBundleBuild</code>이용.</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-cs">// ref: http://docs.unity3d.com/ScriptReference/BuildPipeline.BuildAssetBundles.html
+// ref: http://docs.unity3d.com/ScriptReference/BuildAssetBundleOptions.html
+
+public static AssetBundleManifest
+  BuildAssetBundles(
+      string outputPath,
+      BuildAssetBundleOptions assetBundleOptions = BuildAssetBundleOptions.None,
+      BuildTarget targetPlatform = BuildTarget.WebPlayer
+);
+
+public static AssetBundleManifest
+  BuildAssetBundles(
+      string outputPath,
+      AssetBundleBuild[] builds,
+      BuildAssetBundleOptions assetBundleOptions = BuildAssetBundleOptions.None,
+      BuildTarget targetPlatform = BuildTarget.WebPlayer
+);
+
+
+AssetBundleBuild
+http://docs.unity3d.com/ScriptReference/AssetBundleBuild.html
+    assetBundleName	AssetBundle name.
+    assetBundleVariant	AssetBundle variant.
+    assetNames	Asset names which belong to the given AssetBundle.
+
+AssetBundleManifest
+http://docs.unity3d.com/ScriptReference/AssetBundleManifest.html
+    GetAllAssetBundles	Get all the AssetBundles in the manifest.
+    GetAllAssetBundlesWithVariant	Get all the AssetBundles with variant in the manifest.
+    GetAllDependencies	Get all the dependent AssetBundles for the given AssetBundle.
+    GetAssetBundleHash	Get the hash for the given AssetBundle.
+    GetDirectDependencies	Get the direct dependent AssetBundles for the given AssetBundle.
+
+</code></pre>
+<div class="table-wrapper"><table><thead><tr><th>BuildAssetBundleOptions (Flag)</th><th>설명</th></tr></thead><tbody>
+<tr><td>None</td><td>.</td></tr>
+<tr><td>UncompressedAssetBundle</td><td>압축안함</td></tr>
+<tr><td>DisableWriteTypeTree</td><td>type information 포함 안함</td></tr>
+<tr><td>DeterministicAssetBundle</td><td>Builds an asset bundle using a hash for the id of the object stored in the asset bundle.</td></tr>
+<tr><td>ForceRebuildAssetBundle</td><td>강제 재빌드</td></tr>
+<tr><td>IgnoreTypeTreeChanges</td><td>Ignore the type tree changes when doing the incremental build check.</td></tr>
+<tr><td>AppendHashToAssetBundleName</td><td>Append the hash to the assetBundle name.</td></tr>
+<tr><td>ChunkBasedCompression</td><td>Use chunk-based LZ4 compression when creating the AssetBundle.</td></tr>
+<tr><td>StrictMode</td><td>에러시 빌드 안함</td></tr>
+<tr><td>DryRunBuild</td><td>dry run build.</td></tr>
+<tr><td>DisableLoadAssetByFileName</td><td>Disables Asset Bundle LoadAsset by file name.</td></tr>
+<tr><td>DisableLoadAssetByFileNameWithExtension</td><td>Disables Asset Bundle LoadAsset by file name with extension.</td></tr>
+<tr><td>AssetBundleStripUnityVersion</td><td>Removes the Unity Version number in the Archive File &amp; Serialized File headers during the build.</td></tr>
+</tbody></table>
+</div>
+<h4 id="현재방식-문제"><a class="header" href="#현재방식-문제">현재방식 문제</a></h4>
+<ul>
+<li>레퍼런스 카운트관리로 로드 언로드 기능이 없어서 중복 로드가 가능</li>
+<li>비동기 로드가 2개 있는데 이게 비동기여서 동기화 문제를 처리하기 곤란
+<ul>
+<li>파일에서 번들을 로드하는 AssetBundleCreateRequest</li>
+<li>번들에서 에셋을 로드하는 AssetBundleRequest</li>
+</ul>
+</li>
+</ul>
+<h2 id="구조"><a class="header" href="#구조">구조</a></h2>
+<h3 id="assetbundlemanifest"><a class="header" href="#assetbundlemanifest">AssetBundleManifest</a></h3>
+<ul>
+<li>include all the assetbundles</li>
+<li>include all the assetbundle dependencies</li>
+</ul>
+<h3 id="manifest"><a class="header" href="#manifest">.manifest</a></h3>
+<ul>
+<li>CRC</li>
+<li>Asset names</li>
+<li>Dependent AssetBundle names</li>
+<li>Hash</li>
+<li>ClassTypes</li>
+</ul>
+<h3 id="assetbundle을-다시-빌드하는-경우"><a class="header" href="#assetbundle을-다시-빌드하는-경우">AssetBundle을 다시 빌드하는 경우</a></h3>
+<ul>
+<li>type tree가 변경되었을 경우.</li>
+<li>asset 파일이 변경되었을 경우
+<ul>
+<li>runtime class type tree change
+<ul>
+<li>upgrade to a new version of unity-asset-bundles/</li>
+</ul>
+</li>
+<li>script type tree change
+<ul>
+<li>change the public members ...</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="lz4-지원"><a class="header" href="#lz4-지원">Lz4 지원</a></h3>
+<div class="table-wrapper"><table><thead><tr><th></th><th>BuildCompression</th><th>압축률</th><th>해제시간</th><th>기타</th></tr></thead><tbody>
+<tr><td>Lzma</td><td>LZMA</td><td>큼</td><td>큼</td><td>통으로 압축</td></tr>
+<tr><td>Lz4HC</td><td>LZ4</td><td>중간</td><td>중간</td><td>Lz4에서 압축률을 높인것(High-Compression)</td></tr>
+<tr><td>Lz4</td><td>LZ4Runtime</td><td>작음</td><td>작음</td><td>Chunk단위 압축/로드</td></tr>
+</tbody></table>
+</div><div class="table-wrapper"><table><thead><tr><th>번들 압축타입별 성능</th><th>LZ4일때</th><th>LZMA일때</th></tr></thead><tbody>
+<tr><td>assetBundle.LoadFromFile(Async)</td><td>디스크 읽기(Mem: 헤더크기)</td><td>디스크 읽기 + LZMA 해제 + LZ4압축(Mem: LZ4 bundle size)</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li><code>AssetBundle.LoadFromFileAsync</code>은 LZMA일때 메모리를 사용한다.
+<ul>
+<li><code>AssetBundle.RecompressAssetBundleAsync</code>를 이용하여 LZ4로 변환하여 저장하여 성능향상을 도모할 수 있다.</li>
+<li>BuildCompression.LZ4Runtime 처럼 뒤에 Runtime이 붙는걸로 변환해야하며 아니면 ArgumentException 이 뜬다.</li>
+</ul>
+</li>
+</ul>
+<h2 id="unitywebrequestuwr와-caching"><a class="header" href="#unitywebrequestuwr와-caching">UnityWebRequest(UWR)와 Caching</a></h2>
+<ul>
+<li>2017.1 부터 캐싱 api가 확장됨 https://docs.unity3d.com/ScriptReference/Caching.html</li>
+</ul>
+<p>If you provide a version parameter to the UWR API, Unity stores your AssetBundle data in the Disk Cache. If you do not provide a version parameter, Unity uses the Memory Cache. The version parameter can be either a version number or a hash.</p>
+<div class="table-wrapper"><table><thead><tr><th>Caching.compressionEnabled</th><th></th></tr></thead><tbody>
+<tr><td>true</td><td>Unity applies LZ4 compression when it writes AssetBundles to disk for all subsequent downloads. It does not compress existing uncompressed data in the cache.</td></tr>
+<tr><td>false</td><td>Unity applies no compression when it writes AssetBundles to disk.</td></tr>
+</tbody></table>
+</div>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th></th><th></th><th></th></tr></thead><tbody>
+<tr><td>CRC</td><td>CRC32</td><td>bytes</td></tr>
+<tr><td>Hash</td><td><a href="https://en.wikipedia.org/wiki/Jenkins_hash_function#SpookyHash">SpookyHashV2</a></td><td>asset files, type trees, buildtarget, buildoption, callbacks ...</td></tr>
+</tbody></table>
+</div>
+<p>CollectDependencies : on
+DeterministicAssetBundle : on
+CompleteAssets : deprecated
+DisableWritetypeTree : nope
+UncompressedAssetBundle : nope</p>
+<p>-new
+ForceRebuildAssetBundle
+IgnoreTypeTreeChanges
+AppendHashToAssetBundleName</p>
+<ul>
+<li>get different name when bundle changes</li>
+<li>easy to detect if you want to upload to CDN</li>
+</ul>
+<p>=======================================
+Editor Simulation
+Use assetbundle without actually building them
+GetAssetPathsFromAssetBundleAndAssetName</p>
+<p>=======================================</p>
+<p>assetbundle hash</p>
+<ul>
+<li>asset files</li>
+<li>type trees</li>
+<li>buildtarget</li>
+<li>buildoptino</li>
+<li>callbacks</li>
+<li>...</li>
+</ul>
+<h1 id="-name을-뺐을시-빌드되는-bundle의-삭제는-일어나지-않았다"><a class="header" href="#-name을-뺐을시-빌드되는-bundle의-삭제는-일어나지-않았다">% name을 뺐을시 빌드되는 bundle의 삭제는 일어나지 않았다.</a></h1>
+<p>AppendHashToAssetBundleName</p>
+<ul>
+<li>Get different name when bundle changes.</li>
+</ul>
+<p>A.assetBundleName  = "group0/a"</p>
+<p>assetBundleName 은 소문자만 올 수 있다.(under_score방식으로 내이밍을 지정하야할듯.)</p>
+<p>heirachy search filter
+b: - bundle</p>
+<p>b:group0 A</p>
+<h1 id="manifest-1"><a class="header" href="#manifest-1">Manifest</a></h1>
+<ul>
+<li>CRC</li>
+<li>Asset names</li>
+<li>Dependent AssetBundle names</li>
+<li>Hash</li>
+<li>ClassTypes</li>
+</ul>
+<h1 id="single-manifest-file"><a class="header" href="#single-manifest-file">Single manifest file</a></h1>
+<p>include all the assetbundles
+include all the assetbundle dependencies</p>
+<pre><code>    // AssetImporter atPath = AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(current));
+</code></pre>
+<p>delta building
+http://blog.juiceboxmobile.com/2013/06/19/per-asset-versioning-with-unity-asset-bundles/</p>
+<h1 id="buildassetbundleoptions"><a class="header" href="#buildassetbundleoptions">BuildAssetBundleOptions</a></h1>
+<pre><code class="language-txt">    CollectDependencies : on
+    DeterministicAssetBundle : on
+    CompleteAssets : deprecated
+    DisableWritetypeTree : nope
+    UncompressedAssetBundle : nope
+
+
+    ForceRebuildAssetBundle
+    IgnoreTypeTreeChanges
+    AppendHashToAssetBundleName
+     - get different name when bundle changes
+     - easy to detect if you want to upload to CDN
+</code></pre>
+<hr />
+<h1 id="assetbundlebuild"><a class="header" href="#assetbundlebuild">AssetBundleBuild</a></h1>
+<ul>
+<li>http://docs.unity3d.com/ScriptReference/AssetBundleBuild.html</li>
+<li>assetBundleName 은 lower_case만 올 수 있다.(under_score방식으로 내이밍을 지정하야할듯.)</li>
+</ul>
+<pre><code class="language-txt">    assetBundleName	AssetBundle name.
+    assetBundleVariant	AssetBundle variant.
+    assetNames	Asset names which belong to the given AssetBundle.
+</code></pre>
+<hr />
+<h1 id="assetbundlemanifest-1"><a class="header" href="#assetbundlemanifest-1">AssetBundleManifest</a></h1>
+<ul>
+<li>http://docs.unity3d.com/ScriptReference/AssetBundleManifest.html</li>
+</ul>
+<pre><code class="language-txt">    GetAllAssetBundles	Get all the AssetBundles in the manifest.
+    GetAllAssetBundlesWithVariant	Get all the AssetBundles with variant in the manifest.
+    GetAllDependencies	Get all the dependent AssetBundles for the given AssetBundle.
+    GetAssetBundleHash	Get the hash for the given AssetBundle.
+    GetDirectDependencies	Get the direct dependent AssetBundles for the given AssetBundle.
+</code></pre>
+<hr />
+<h1 id="에셋번들-빌드"><a class="header" href="#에셋번들-빌드">에셋번들 빌드</a></h1>
+<pre><code class="language-yaml">r_in
+  group_00
+    a - "group_00/a"
+  group_01
+    b - "group_01/b"
+
+
+r_out
+  r_out           - assetbundle "AssetBundleManifest"
+  r_out.manifest
+  group_00
+    a             - assetbundle
+    a.manifest
+  group_01
+    b             - assetbundle
+    b.manifest
+</code></pre>
+<h1 id="amanifest"><a class="header" href="#amanifest">a.manifest</a></h1>
+<pre><code class="language-yaml">ManifestFileVersion: 0
+CRC: 1388230569
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 61d898772c9a833793dbaf6bebe6e50b
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 1033bf7ddfd4c6d43e7a6382c0a0a61a
+HashAppended: 0
+ClassTypes:
+- Class: 49
+  Script: {instanceID: 0}
+Assets:
+- Assets/r_in/A.txt
+Dependencies: []
+</code></pre>
+<hr />
+<h1 id="manifest-2"><a class="header" href="#manifest-2">Manifest</a></h1>
+<ul>
+<li>CRC</li>
+<li>Asset names</li>
+<li>Dependent AssetBundle names</li>
+<li>Hash</li>
+<li>ClassTypes</li>
+</ul>
+<hr />
+<h1 id="assetbundlemanifest-2"><a class="header" href="#assetbundlemanifest-2">AssetBundleManifest</a></h1>
+<ul>
+<li>include all the assetbundles</li>
+<li>include all the assetbundle dependencies</li>
+</ul>
+<hr />
+<h1 id="assetbundle-hash의-구성-요소"><a class="header" href="#assetbundle-hash의-구성-요소">assetbundle hash의 구성 요소</a></h1>
+<ul>
+<li>asset files</li>
+<li>type trees</li>
+<li>buildtarget</li>
+<li>buildoptino</li>
+<li>callbacks</li>
+<li>...</li>
+</ul>
+<hr />
+<h2 id="crccyclic-redundancy-check"><a class="header" href="#crccyclic-redundancy-check">CRC(Cyclic redundancy check)</a></h2>
+<ul>
+<li>https://en.wikipedia.org/wiki/Cyclic_redundancy_check</li>
+</ul>
+<p>A cyclic redundancy check (CRC) is an error-detecting code commonly used in digital networks and storage devices to detect accidental changes to raw data. Blocks of data entering these systems get a short check value attached, based on the remainder of a polynomial division of their contents. On retrieval the calculation is repeated, and corrective action can be taken against presumed data corruption if the check values do not match.</p>
+<pre><code>message : 11010011101100
+polynomial : (1x^3 + 0x^2 + 1x^1 + 1x^0) = 1011
+
+  11010011101100 000 (padding)
+/ 1011
+--------------------
+  00000000000000 100 (3bit crc)
+</code></pre>
+<hr />
+<h2 id="ex-파일-내용-변경"><a class="header" href="#ex-파일-내용-변경">ex) 파일 내용 변경</a></h2>
+<pre><code class="language-yaml">A.txt =&gt; A
+  CRC: 4046214375
+  AssetFileHash: 61d898772c9a833793dbaf6bebe6e50b
+  TypeTreeHash: 1033bf7ddfd4c6d43e7a6382c0a0a61a
+A.txt =&gt; Ab
+  CRC: 2593905627
+  AssetFileHash: 575d09e564dfa87a3d1944e6ec6c6ee0
+  TypeTreeHash: 1033bf7ddfd4c6d43e7a6382c0a0a61a
+A.txt =&gt; A
+  CRC: 4046214375
+  AssetFileHash: caea7ff4da8c26db06dda68fe7fe81a9
+  TypeTreeHash: 1033bf7ddfd4c6d43e7a6382c0a0a61a
+</code></pre>
+<hr />
+<h2 id="ex-스크립트-코드-변경"><a class="header" href="#ex-스크립트-코드-변경">ex) 스크립트 코드 변경</a></h2>
+<pre><code class="language-yaml">Aprefab.prefab(번들) - AScript.cs(번들로 할 수 없음.)
+
+CRC: 420622857
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: bd07c562a9845e21ce9b377999a8d5e5
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: cb793a1a0e0d96bcd61e08b4b42ececd
+  Script: {fileID: 11500000, guid: 64be57d524a10794bb32a78c6b86769a, type: 3}
+
+
+public int a = 10; 라인 추가.
+
+CRC: 2838598984
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: bd07c562a9845e21ce9b377999a8d5e5
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 9523d3cf1bd04d4ae7937ea9cae4ba0e
+  Script: {fileID: 11500000, guid: 64be57d524a10794bb32a78c6b86769a, type: 3}
+
+
+
+public int a = 10; 라인 삭제.
+CRC: 3037027640
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: bd07c562a9845e21ce9b377999a8d5e5
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: cb793a1a0e0d96bcd61e08b4b42ececd
+  Script: {fileID: 11500000, guid: 64be57d524a10794bb32a78c6b86769a, type: 3}
+</code></pre>
+<hr />
+<h1 id="하이어라키-검색-필터"><a class="header" href="#하이어라키-검색-필터">하이어라키 검색 필터</a></h1>
+<pre><code>b: - bundle
+</code></pre>
+<hr />
+<h1 id="주의사항"><a class="header" href="#주의사항">주의사항</a></h1>
+<ul>
+<li>name 변경시, 사전빌드되는 bundle의 삭제는 일어나지 않았다.</li>
+</ul>
+<h2 id="ref"><a class="header" href="#ref">Ref</a></h2>
+<ul>
+<li><a href="http://docs.unity3d.com/Manual/BuildingAssetBundles5x.html">BuildingAssetBundles in 5.x</a></li>
+<li><a href="https://en.wikipedia.org/wiki/YAML">wiki - yaml</a></li>
+<li><a href="https://www.youtube.com/watch?v=gVUgF2ZHveo">Unite 2014 - New AssetBundle Build System in Unity 5</a></li>
+<li><a href="http://unity3d.com/learn/tutorials/modules/intermediate/live-training-archive/unity5-asset-bundles">WORKING WITH ASSET BUNDLES IN UNITY 5</a></li>
+<li><a href="https://www.youtube.com/watch?v=6D9AbQodeVg">Live Training April 29th, 2015: Working with Asset Bundles in Unity 5</a></li>
+<li><a href="http://blog.juiceboxmobile.com/2013/06/19/per-asset-versioning-with-unity-asset-bundles/">Per Asset Versioning with Unity Asset Bundles</a></li>
+<li><a href="https://qiita.com/k7a/items/d27640ac0276214fc850">AssetBundleを完全に理解する</a></li>
+<li><a href="https://docs.unity3d.com/Manual/AssetBundles-Dependencies.html">AssetBundles-Dependencies</a></li>
+<li><a href="https://github.com/Perfare/AssetStudio">https://github.com/Perfare/AssetStudio</a></li>
+<li><a href="https://www.youtube.com/watch?v=Lx61ZEKEvnQ">에셋번들 실전 가이드 (AssetBundle Best Practices)</a></li>
+</ul>
+<h2 id="etc"><a class="header" href="#etc">Etc</a></h2>
+<p><a href="https://tsubakit1.hateblo.jp/entry/2016/07/20/235900">【Unity】AssetBundleのManifestファイルに書かれている内容について</a>
+<a href="https://zhuanlan.zhihu.com/p/369264807">【Unity】SBP - Scriptable Build Pipeline 郡墙</a></p>
+<ul>
+<li>https://github.com/HearthSim/UnityPack</li>
+<li>https://github.com/lujian101/AssetBundleDecompressor</li>
+</ul>
+<hr />
+<h2 id="셰이더"><a class="header" href="#셰이더">셰이더</a></h2>
+<ul>
+<li>
+<p>로딩: https://docs.unity3d.com/Manual/shader-loading.html</p>
+</li>
+<li>
+<p><a href="https://www.youtube.com/watch?v=v3v3Q4TqMeM">[유니티 TIPS] 셰이더 배리언트 A to Z</a></p>
+</li>
+<li>
+<p>Always Includes</p>
+<ul>
+<li>Project Settings &gt; Graphics &gt; Built-in Shader Settings &gt; Always Includes</li>
+</ul>
+</li>
+<li>
+<p>ShaderVariantCollection</p>
+<ul>
+<li>https://blog.unity.com/engine-platform/stripping-scriptable-shader-variants</li>
+<li>https://note.com/wotakuro/n/n5bbd88c62d61</li>
+<li>IPreprocessShaders</li>
+</ul>
+</li>
+</ul>
+<p>셰이더 키워드</p>
+<ul>
+<li>FrameDebugger 에서도 사용중인 키워드 확인가능</li>
+<li>활성화
+<ul>
+<li>
+<p>Material.EnableKeywrod</p>
+</li>
+<li>
+<p>Shader.EnableKeyword</p>
+</li>
+<li>
+<p>Project Settings &gt; Graphics &gt; Shader Loading &gt; Preloaded Shaders</p>
+<ul>
+<li>게임을 로드하는 동안 preload</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>런타임에서는 플랫폼에 관계없이 셰이더 객체의 내용은 장면에 들어갈 때 메모리에 로드되지만 실제로 처음 렌더링이 호출될 때 컴파일되고 컴파일이 완료된 후 캐시됩니다.</p>
+<p>warmup</p>
+<ul>
+<li>ShaderVariantCollection.WarmUp</li>
+<li>ShaderWarmup.WarmupShader</li>
+<li>ShaderWarmup.WarmupShaderFromCollection</li>
+</ul>
+<p>https://forum.unity.com/threads/new-shader-warmup-api.1231287/
+https://tsubakit1.hateblo.jp/entry/2018/11/18/001612</p>
+<p>https://blog.unity.com/technology/optimizing-loading-performance-understanding-the-async-upload-pipeline</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="accelerator"><a class="header" href="#accelerator">accelerator</a></h1>
+<p>AssetPipeline2</p>
+<ul>
+<li><a href="https://docs.unity3d.com/Manual/UnityAccelerator.html">https://docs.unity3d.com/Manual/UnityAccelerator.html</a></li>
+<li><a href="https://hub.docker.com/r/unitytechnologies/accelerator">https://hub.docker.com/r/unitytechnologies/accelerator</a></li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th></th><th></th><th></th></tr></thead><tbody>
+<tr><td>에셋 파이프라인 임포트</td><td>무료</td><td>2019.3 Beta 6</td></tr>
+<tr><td>콜라보레이트 소스 관리</td><td>팀즈 어드밴스드 구독</td><td></td></tr>
+</tbody></table>
+</div>
+<h2 id="목차-1"><a class="header" href="#목차-1">목차</a></h2>
+<ul>
+<li><a href="unity/accelerator.html#%EC%A2%85%EB%A3%8C">종료</a></li>
+<li><a href="unity/accelerator.html#%EC%A3%BC%EC%9D%98">주의</a></li>
+<li><a href="unity/accelerator.html#path">path</a></li>
+</ul>
+<h2 id="종료"><a class="header" href="#종료">종료</a></h2>
+<ul>
+<li>
+<p>Windows</p>
+<ul>
+<li>설치파일로 설치하면 서비스로 등록이된다.</li>
+<li>Win + R =&gt; services.msc</li>
+<li>Unity Accelerator</li>
+</ul>
+</li>
+<li>
+<p>Mac OS X</p>
+<ul>
+<li>Run the launchctl command from the terminal to control the “com.unity.accelerator” service from the LaunchControl utility. For more information, visit https://www.launchd.info/.</li>
+</ul>
+</li>
+<li>
+<p>Linux</p>
+<ul>
+<li>Use the service console utility to control the “unity-accelerator” service. For more information, visit http://manpages.ubuntu.com/manpages/bionic/man8/service.8.html.</li>
+</ul>
+</li>
+</ul>
+<h2 id="주의"><a class="header" href="#주의">주의</a></h2>
+<ul>
+<li><a href="https://forum.unity.com/threads/connection-successful-but-cant-download-using-accelerator.1314711/">https://forum.unity.com/threads/connection-successful-but-cant-download-using-accelerator.1314711/</a></li>
+</ul>
+<pre><code class="language-txt"># Checking-out and checking-in
+# These attributes affect how the contents stored in the repository are copied to the working tree files when commands such as git switch,
+# git checkout and git merge run. They also affect how Git stores the contents you prepare in the working tree in the repository upon git add and git commit.
+
+# These setting used for:
+# Upload and download (cache server): Windows, Unix-based machine
+
+# Text file.
+# These files will always have line ending eol=lf because Unity always set eol=lf when these files being created/modified (don't know why)
+*.meta          text eol=lf
+*.prefab        text eol=lf
+*.unity         text eol=lf
+*.mat           text eol=lf
+*.renderTexture text eol=lf
+*.terrainlayer  text eol=lf
+*.anim          text eol=lf
+*.controller    text eol=lf
+*.compute       text eol=lf
+*.lighting      text eol=lf
+*.asset         text eol=lf
+
+# These files will always have eol being normalized to support cross OS, means that they'll have there eol based on OS (CRLF on Windows or LF on Unix-based)
+*.lua           text=auto
+*.cs            text=auto
+*.txt           text=auto
+*.md            text=auto
+*.mdown         text=auto
+*.xlsx          text=auto
+*.xml           text=auto
+*.XML           text=auto
+*.csv           text=auto
+*.h             text=auto
+*.shader        text=auto
+*.json          text=auto
+
+
+# Denote all files that are truly binary and should not have eol being modified.
+# Image
+*.png           binary
+*.PNG           binary
+*.jpg           binary
+*.JPG           binary
+*.jpeg          binary
+*.JPEG          binary
+*.tif           binary
+*.psd           binary
+*.tga           binary
+*.TGA           binary
+*.hdr           binary
+*.exr           binary
+*.cubemap       binary
+
+# 3D model
+*.fbx           binary
+*.FBX           binary
+
+# Sound
+*.wav           binary
+*.mp3           binary
+
+# Font
+*.ttf           binary
+*.TTF           binary
+
+# Other
+*.bytes         binary
+
+
+# Better not touching these files, because don't know how it will affect the project (might update in the future)
+# *.gradle
+# *.in
+# *.dylib
+# *.colors
+# *.dll
+# *.aar
+# *.so
+# *.a
+# *.asmdef
+# *.jar
+# *.properties
+# *.obj
+# *.sh
+# *.plist
+# *.mdb
+# *.cginc
+# *.projmods
+# *.lib
+# *.sqlite
+# *.mm
+# *.db
+# *.pdb
+# *.m
+
+</code></pre>
+<h2 id="path"><a class="header" href="#path">path</a></h2>
+<ul>
+<li>
+<p>service: C:\myHome\acc\install\unity-accelerator.exe run --persist C:\myHome\acc\storage</p>
+</li>
+<li>
+<p>help: unity-accelerator.exe --all-help</p>
+</li>
+<li>
+<p>C:\Users\Eunpyoung Kim\AppData\Local\Programs\unity-accelerator-app</p>
+<ul>
+<li>unity-accelerator-app.exe , Uninstall unity-accelerator-app.exe</li>
+</ul>
+</li>
+</ul>
+<p>C:\myHome\acc\install
+C:\myHome\acc\storage</p>
+<pre><code class="language-json">{
+    "IP": "192.168.1.150",
+    "HTTPPort": 7077,
+    "ProtobufPort": 10080,
+
+    "MetricReportInterval": "10m0s",
+    "ConfigQueryInterval": "24h0m0s",
+    "MetricsUpdateInterval": "1m0s",
+    "InfoUpdateInterval": "10m0s",
+    "MaintenanceStart": "00:00",
+    "MaintenanceDuration": "1h0m0s",
+    "CDPOptIn": false,
+    "CDPAgentUUID": "59c57126-81c5-11ee-9f57-a8a159f81ffb",
+    
+    "Debug": true,
+
+    "LogUploadEventsBuffer": 100,
+    
+    "InstallDir": "C:\\Users\\Eunpyoung Kim\\AppData\\Local\\Programs\\unity-accelerator-app\\extrafiles",
+
+    "NoAutoUpdates": false,
+    "CollabEnabled": false,
+    "ADBV2Enabled": true,
+    "LegacyEnabled": false,
+
+    "BinaryDir": "bin",
+    "LogDir": "log",
+    "RuntimeDir": "runtime",
+    "CacheDir": "C:\\myHome\\acc\\storage",
+    "CacheDirSplit": 2,
+
+    "CacheMonitorInterval": "1m0s",
+
+    "CacheMaxPending": 100,
+    "CacheNoAccessTimes": false,
+    "PrefetchMaxPending": 10000,
+    "PrefetchConcurrency": 4,
+    
+    "DefaultHTTPTimeout": "10s",
+    "DefaultHTTPKeepAlive": "10s",
+    "DefaultHTTPInsecureSkipVerify": false,
+    "DefaultHTTPAutoEnableHTTP2": false,
+    "DefaultHTTPAttempts": 5,
+    "DefaultHTTPDelay": "1s",
+    "DefaultHTTPChunkSize": 65536,
+    "UTAServiceURL": "https://accelerator.cloud.unity3d.com",
+    "UTAServiceTimeout": "10s",
+    "UTAServiceKeepAlive": "10s",
+    "UTAServiceInsecureSkipVerify": false,
+    "UTAServiceAutoEnableHTTP2": false,
+    "UTAServiceAttempts": 5,
+    "UTAServiceDelay": "1s",
+    "UTAServiceChunkSize": 65536,
+    "CollabURL": "https://collab.cloud.unity3d.com",
+    "CollabTimeout": "10m0s",
+    "CollabKeepAlive": "10s",
+    "CollabInsecureSkipVerify": false,
+    "CollabAutoEnableHTTP2": false,
+    "CollabAttempts": 5,
+    "CollabDelay": "1s",
+    "CollabChunkSize": 65536,
+    "CoreURL": "https://api.unity.com/v1/core",
+    
+    
+    "ProtobufPerStreamBuffer": 16,
+    "ProtobufTLSRequired": false,
+    "ProtobufAuthRequired": false,
+    "ProtobufBlobHashRequired": false,
+    "ProtobufBlobHashValidateGets": false,
+    "ProtobufBlobHashValidatePuts": false,
+    "ProtobufForwardPuts": "",
+    "ProtobufForwardPutsQueue": 100000,
+    "ProtobufForwardPutsConcurrency": 100,
+    "ProtobufForwardPutsErrorRateLimit": 60,
+    "ProtobufForwardPutsErrorRateInterval": "1m0s",
+    "ProtobufForwardPutsErrorRatePunishment": "1h0m0s",
+    "ProtobufRetrieveItems": "",
+    "ProtobufRetrieveItemsConcurrency": 100,
+    "ProtobufRetrieveItemsInterval": "10m0s"
+}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="attribute"><a class="header" href="#attribute">attribute</a></h1>
+<h2 id="runtime"><a class="header" href="#runtime">Runtime</a></h2>
+<div class="table-wrapper"><table><thead><tr><th></th><th></th></tr></thead><tbody>
+<tr><td>HelpURLAttribute</td><td></td></tr>
+<tr><td>DisallowMultipleComponent</td><td></td></tr>
+<tr><td>HideInCallstackAttribute Strip logging callstack</td><td></td></tr>
+<tr><td>ExecuteAlways</td><td></td></tr>
+<tr><td>ExecuteInEditMode</td><td></td></tr>
+<tr><td>ImageEffectAllowedInSceneView</td><td>Any Image Effect with this attribute can be rendered into the Scene view camera.</td></tr>
+<tr><td>RuntimeInitializeOnLoadMethodAttribute</td><td></td></tr>
+<tr><td>SelectionBaseAttribute</td><td></td></tr>
+<tr><td>SerializeField</td><td></td></tr>
+<tr><td>SerializeReference</td><td></td></tr>
+</tbody></table>
+</div><div class="table-wrapper"><table><thead><tr><th></th><th></th></tr></thead><tbody>
+<tr><td>IconAttribute</td><td></td></tr>
+<tr><td>HeaderAttribute</td><td>fields</td></tr>
+<tr><td>SpaceAttribute</td><td></td></tr>
+<tr><td>TextAreaAttribute</td><td></td></tr>
+<tr><td>TooltipAttribute</td><td></td></tr>
+<tr><td>HideInInspector</td><td></td></tr>
+</tbody></table>
+</div>
+<h2 id="editor"><a class="header" href="#editor">Editor</a></h2>
+<ul>
+<li>https://docs.unity3d.com/ScriptReference/CallbackOrderAttribute.html</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th></th><th></th></tr></thead><tbody>
+<tr><td>CanEditMultipleObjects</td><td></td></tr>
+<tr><td>CustomEditor</td><td></td></tr>
+<tr><td>CustomPreviewAttribute</td><td></td></tr>
+<tr><td>CustomPropertyDrawer</td><td></td></tr>
+<tr><td>DrawGizmo</td><td></td></tr>
+<tr><td>InitializeOnEnterPlayModeAttribute</td><td></td></tr>
+<tr><td>InitializeOnLoad</td><td></td></tr>
+<tr><td>InitializeOnLoadMethodAttribute</td><td></td></tr>
+</tbody></table>
+</div>
+<h2 id="runtimeinitializeonloadmethod"><a class="header" href="#runtimeinitializeonloadmethod">RuntimeInitializeOnLoadMethod</a></h2>
+<p><a href="https://docs.unity3d.com/ScriptReference/RuntimeInitializeLoadType.html">RuntimeInitializeLoadType</a></p>
+<div class="table-wrapper"><table><thead><tr><th>RuntimeInitializeLoadType</th><th>첫 번째 씬의 오브젝트는 로드</th><th></th></tr></thead><tbody>
+<tr><td>SubsystemRegistration</td><td>X</td><td>런타임을 시작할 때</td></tr>
+<tr><td>AfterAssembliesLoaded</td><td>X</td><td>모든 어셈블리가 로드되고 미리 로드된 에셋이 초기화될 때</td></tr>
+<tr><td>BeforeSplashScreen</td><td>X</td><td>스플래시 화면이 표시되기 전</td></tr>
+<tr><td>BeforeSceneLoad</td><td>X</td><td>Awake가 호출되기 전</td></tr>
+<tr><td>.</td><td>O</td><td>Unity MonoBehaviour.Awake</td></tr>
+<tr><td>.</td><td>O</td><td>Unity MonoBehaviour.OnEnable</td></tr>
+<tr><td>AfterSceneLoad</td><td>O</td><td>Awake가 호출된 후</td></tr>
+<tr><td>.</td><td>O</td><td>RuntimeInitializeOnLoadMethod 단독</td></tr>
+<tr><td>.</td><td>O</td><td>Unity MonoBehaviour.Start</td></tr>
+</tbody></table>
+</div>
+<h2 id="ref-1"><a class="header" href="#ref-1">Ref</a></h2>
+<ul>
+<li><a href="https://gist.github.com/hybridherbst/36ae70b6520981c8edc7b478423fae5e">https://gist.github.com/hybridherbst/36ae70b6520981c8edc7b478423fae5e</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="package"><a class="header" href="#package">Package</a></h1>
+<ul>
+<li><a href="https://youtu.be/22HIEQTyozQ?si=iDa45oQW6xCmRoKc">[unite copenhagen2019] Understanding the package management ecosystem - Unite Copenhagen</a></li>
+<li><a href="https://docs.unity3d.com/Manual/upm-ui-giturl.html">https://docs.unity3d.com/Manual/upm-ui-giturl.html</a></li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="package-unity"><a class="header" href="#package-unity">package-unity</a></h1>
 <ul>
@@ -296,10 +1109,433 @@
 </ul>
 </li>
 </ul>
-<h2 id="ref"><a class="header" href="#ref">Ref</a></h2>
+<h2 id="ref-2"><a class="header" href="#ref-2">Ref</a></h2>
 <ul>
 <li><a href="https://github.com/orgs/needle-mirror/repositories">https://github.com/orgs/needle-mirror/repositories</a></li>
 <li><a href="https://github.com/orgs/Unity-Technologies/repositories">https://github.com/orgs/Unity-Technologies/repositories</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="scriptable-build-pipeline-sbp"><a class="header" href="#scriptable-build-pipeline-sbp">Scriptable Build Pipeline SBP</a></h1>
+<ul>
+<li>SBP(Scriptable Build Pipeline) (Unity 2018.3 ~ )</li>
+</ul>
+<pre><code class="language-cs">AssetBundleCreateRequest abcr = AssetBundle.LoadFromFileAsync(fpath);               // 비동기: 번들로드(파일로부터)
+AssetBundle ab = abcr.assetBundle;
+AssetBundleRequest abr = ab.LoadAssetAsync&lt;CompatibilityAssetBundleManifest&gt;(name); // 비동기: 에셋로드(번들로부터)
+UnityEngine.Object obj = abr.asset;
+_manifest = obj as CompatibilityAssetBundleManifest;
+</code></pre>
+<ul>
+<li><a href="https://docs.google.com/document/d/1uuiEDV7WqpHEylzE4GQwOztCttrwPu6ak0kfELz6ilc/edit#">Scriptable Build Pipeline - 2018.3 Getting Started Guide</a></li>
+<li><a href="https://github.com/needle-mirror/com.unity.scriptablebuildpipeline">src(mirror)</a></li>
+<li><a href="https://docs.unity3d.com/Packages/com.unity.scriptablebuildpipeline@2.0/manual/index.html">doc</a></li>
+</ul>
+<h3 id="현재와-sbp-비교"><a class="header" href="#현재와-sbp-비교">현재와 SBP 비교</a></h3>
+<h4 id="빌드-결과물"><a class="header" href="#빌드-결과물">빌드 결과물</a></h4>
+<pre><code class="language-txt">// Built-in
+// outputPath : "__AssetBundle/Windows"
+
+|- prj/
+    |- Assets/
+    |- __AssetBundle/Windows/
+        |- Windows                   - class AssetBundleManifest
+        |- Windows.manifest
+        |- sphere
+        |- sphere.manifest
+        |- cube
+        |- cube.manifest
+</code></pre>
+<pre><code class="language-txt">// SBP
+// outputPath : "__AssetBundle/Windows"
+
+|- prj/
+    |- Assets/
+    |- __AssetBundle/Windows/
+        |- buildlogtep.json
+        |- Windows.manifest
+        |- sphere
+        |- cube
+</code></pre>
+<ul>
+<li>buildlogtep.json
+<ul>
+<li>tep(Trace Event Profileing)</li>
+<li><a href="https://www.chromium.org/developers/how-tos/trace-event-profiling-tool">https://www.chromium.org/developers/how-tos/trace-event-profiling-tool</a> 로 확인 가능하다
+<ul>
+<li>크롬 열고 주소창에 <code>chrome://tracing</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="기본옵션없이-빌드시-로드시-이름"><a class="header" href="#기본옵션없이-빌드시-로드시-이름">기본(옵션없이) 빌드시 로드시 이름</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>방식</th><th>로드 가능한 이름</th></tr></thead><tbody>
+<tr><td>기존</td><td>Assets/ExampleFolder/Asset.prefab , Asset , Asset.prefab</td></tr>
+<tr><td>SBP</td><td>Assets/ExampleFolder/Asset.prefab</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>SBP에서는 저대로는 불편하니 따로 AssetBundleBuild의 addressableNames을 지정해 주어야 한다.</li>
+<li>현재 SBP에서는 AssetBundle Variants을 지원하지 않는다.</li>
+</ul>
+<pre><code class="language-cs">// ref: https://docs.unity3d.com/ScriptReference/AssetBundleBuild.html
+// ref: https://github.com/Unity-Technologies/UnityCsReference/blob/61f92bd79ae862c4465d35270f9d1d57befd1761/Editor/Mono/BuildPipeline.bindings.cs#L176
+public struct AssetBundleBuild
+{
+    // - assetBundleName 은 lower_case만 올 수 있다.(under_score방식으로 내이밍을 지정하야할듯.)
+    public string   assetBundleName;
+    public string   assetBundleVariant;
+    public string[] assetNames;
+    [NativeName("nameOverrides")]
+    public string[] addressableNames;
+}
+
+// 예) 확장자 없는 소문자 파일명.
+AssetBundleBuild[] bundles = ContentBuildInterface.GenerateAssetBundleBuilds();
+for (var i = 0; i &lt; bundles.Length; ++i)
+{
+    bundles[i].addressableNames = bundles[i].assetNames.Select(x =&gt; Path.GetFileNameWithoutExtension(x).ToLower()).ToArray();
+}
+</code></pre>
+<h3 id="빌드"><a class="header" href="#빌드">빌드</a></h3>
+<pre><code class="language-cs">// Built-in - BuildPipeline.cs
+// AssetBundleManifest 반환
+public static AssetBundleManifest BuildAssetBundles(string outputPath, BuildAssetBundleOptions assetBundleOptions, BuildTarget targetPlatform);
+public static AssetBundleManifest BuildAssetBundles(string outputPath, AssetBundleBuild[] builds, BuildAssetBundleOptions assetBundleOptions, BuildTarget targetPlatform);
+
+// SBP - CompatibilityBuildPipeline.cs
+// CompatibilityAssetBundleManifest 반환
+public static CompatibilityAssetBundleManifest
+  BuildAssetBundles(string outputPath, BuildAssetBundleOptions assetBundleOptions, BuildTarget targetPlatform);
+public static CompatibilityAssetBundleManifest
+  BuildAssetBundles(string outputPath, AssetBundleBuild[] builds, BuildAssetBundleOptions assetBundleOptions, BuildTarget targetPlatform)
+</code></pre>
+<h2 id="더-알아보기"><a class="header" href="#더-알아보기">더 알아보기</a></h2>
+<h3 id="guid-and-localidfileid"><a class="header" href="#guid-and-localidfileid">guid and LocalID(fileID)</a></h3>
+<div class="table-wrapper"><table><thead><tr><th></th><th></th></tr></thead><tbody>
+<tr><td>guid</td><td>파일 위치 추상화(따라서 파일위치를 옮겨도 guid를 추적해서 찾음)</td></tr>
+<tr><td>local ID</td><td>UnityEngine.Object 구분</td></tr>
+<tr><td>Instance ID</td><td>guid, localID 비교는 느리기에 해당 정보를 담은 integer. 세션 라이프타임</td></tr>
+<tr><td>PersistentManager(Cache)</td><td>Instance ID변환 정보 관리</td></tr>
+</tbody></table>
+</div>
+<p>시작할 때, Instance ID 캐시는 프로젝트에 내장되어있는 모든 오브젝트에 대한 데이터(즉, 씬에서 참조된 데이터)와 Resources 폴더에 포함된 오브젝트에 대한 데이터로 초기화 됩니다. 런타임에 새로운 애셋이 임포트되거나 애셋번들(AssetBundle)로 부터 오브젝트가 로드되면[3], 해당 정보가 캐시에 추가 저장됩니다. Instance ID 정보는 생성된후 일정 시점이 지나면 삭제됩니다. Instance ID의 삭제는 File GUID와 Local ID에 대한 접근을 제공하는 애셋번들이 해제(unload)될 때 발생합니다.</p>
+<p>애셋번들의 해제가 발생하면 Instance ID는 더이상 유효하지 않은 데이터로 간주되어, Instance ID, File GUID, Local ID간의 변환 정보(Mapping)는 메모리 회수를 위해서 삭제됩니다
+해당 애셋번들이 다시 로드되면, 이 애셋번들로부터 로드된 모든 오브젝트를 위한 새로운 Instance ID가 생성됩니다.</p>
+<ul>
+<li><a href="https://forum.unity.com/threads/how-to-get-filename-from-the-local-file-id.693103/#post-4643452">https://forum.unity.com/threads/how-to-get-filename-from-the-local-file-id.693103/#post-4643452</a></li>
+</ul>
+<pre><code class="language-yml"># material.mat
+# LocalID : 2100000
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &amp;2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+</code></pre>
+<pre><code class="language-yml"># material.meta
+# GUID: 66b49cbbb446b3c4b9801dc253c7a006
+fileFormatVersion: 2
+guid: 66b49cbbb446b3c4b9801dc253c7a006
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+
+</code></pre>
+<pre><code class="language-yml"># sphere.prefab
+--- !u!23 &amp;6079199813687459354
+MeshRenderer:
+  m_Materials:
+  - {fileID: 2100000, guid: 66b49cbbb446b3c4b9801dc253c7a006, type: 2}
+</code></pre>
+<h3 id="파일-파해치기"><a class="header" href="#파일-파해치기">파일 파해치기</a></h3>
+<pre><code class="language-txt">// 에셋번들 파일 확인해보기
+// 사용툴은 다음 위치에 있다
+//   Editor/Data/Tools/binary2text
+//   Editor/Data/Tools/WebExtract
+
+&gt; WebExtract sphere
+Extracting file 'sphere'...
+  stream version: 7
+  unity version: 5.x.x
+  unity revision: 2020.3.19f1
+  data size: 26159 bytes
+  creating folder 'sphere_data'
+All ok!
+
+&gt; binary2text sphere_data/CAB-8a62162a93540272034efdc07505212c
+&gt; cat sphere_data/CAB-8a62162a93540272034efdc07505212c.txt
+External References
+path(1): "Library/unity default resources" GUID: 0000000000000000e000000000000000 Type: 0
+path(2): "Resources/unity_builtin_extra" GUID: 0000000000000000f000000000000000 Type: 0
+
+
+ID: -7488534698980864708 (ClassID: 33) MeshFilter
+    ...
+    ...
+ID: 1 (ClassID: 142) AssetBundle
+    m_Name "sphere" (string)
+    m_PreloadTable  (vector)
+        size 9 (int)
+        data  (PPtr&lt;Object&gt;)
+            m_FileID 2 (int)
+            m_PathID 6 (SInt64)
+        data  (PPtr&lt;Object&gt;)
+            m_FileID 1 (int)
+            m_PathID 10207 (SInt64)
+        data  (PPtr&lt;Object&gt;)
+            m_FileID 0 (int)
+            m_PathID -7488534698980864708 (SInt64)
+        data  (PPtr&lt;Object&gt;)
+            m_FileID 0 (int)
+            m_PathID -4850512016903265157 (SInt64)
+        data  (PPtr&lt;Object&gt;)
+            m_FileID 0 (int)
+            m_PathID -1682175822698124268 (SInt64)
+        data  (PPtr&lt;Object&gt;)
+            m_FileID 0 (int)
+            m_PathID 527392551035676803 (SInt64)
+        data  (PPtr&lt;Object&gt;)
+            m_FileID 0 (int)
+            m_PathID 1116404136810533953 (SInt64)
+        data  (PPtr&lt;Object&gt;)
+            m_FileID 0 (int)
+            m_PathID 4331563248782702586 (SInt64)
+        data  (PPtr&lt;Object&gt;)
+            m_FileID 0 (int)
+            m_PathID 7652242249691182802 (SInt64)
+
+    m_Container  (map)
+        size 1 (int)
+        data  (pair)
+            first "assets/new folder/sphere.prefab" (string)
+            second  (AssetInfo)
+                preloadIndex 0 (int)
+                preloadSize 9 (int)
+                asset  (PPtr&lt;Object&gt;)
+                    m_FileID 0 (int)
+                    m_PathID 1116404136810533953 (SInt64)
+
+    m_MainAsset  (AssetInfo)
+        preloadIndex 0 (int)
+        preloadSize 0 (int)
+        asset  (PPtr&lt;Object&gt;)
+            m_FileID 0 (int)
+            m_PathID 0 (SInt64)
+    m_RuntimeCompatibility 1 (unsigned int)
+    m_AssetBundleName "sphere" (string)
+    m_Dependencies  (vector)
+        size 0 (int)
+
+    m_IsStreamedSceneAssetBundle 0 (bool)
+    m_ExplicitDataLayout 0 (int)
+    m_PathFlags 7 (int)
+    m_SceneHashes  (map)
+        size 0 (int)
+</code></pre>
+<h3 id="spheremanifest"><a class="header" href="#spheremanifest">sphere.manifest</a></h3>
+<div class="table-wrapper"><table><thead><tr><th></th><th>byte</th><th>CRC32</th></tr></thead><tbody>
+<tr><td>sphere</td><td>26159</td><td>371129445</td></tr>
+<tr><td>sphere_data\CAB-8a62162a93540272034efdc07505212c</td><td>132220</td><td>3139283453</td></tr>
+</tbody></table>
+</div>
+<pre><code class="language-txt">ManifestFileVersion: 0
+CRC: 3139283453
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: ad5878df927dcf4b8029307918156950
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: b1c185c72cdafab906a20d7064a9cd59
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 135
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/New Folder/Sphere.prefab
+Dependencies: []
+
+</code></pre>
+<h3 id="assetfilehash와-typetreehash"><a class="header" href="#assetfilehash와-typetreehash">AssetFileHash와 TypeTreeHash</a></h3>
+<div class="table-wrapper"><table><thead><tr><th></th><th></th></tr></thead><tbody>
+<tr><td>AssetFileHash</td><td></td></tr>
+<tr><td>TypeTreeHash</td><td></td></tr>
+</tbody></table>
+</div>
+<h4 id="assetfilehash"><a class="header" href="#assetfilehash">AssetFileHash</a></h4>
+<p>ex) 파일 내용 변경</p>
+<pre><code class="language-yaml"># A.txt =&gt; A
+  CRC: 4046214375
+  AssetFileHash: 61d898772c9a833793dbaf6bebe6e50b
+  TypeTreeHash: 1033bf7ddfd4c6d43e7a6382c0a0a61a
+# A.txt =&gt; Ab
+  CRC: 2593905627
+  AssetFileHash: 575d09e564dfa87a3d1944e6ec6c6ee0
+  TypeTreeHash: 1033bf7ddfd4c6d43e7a6382c0a0a61a
+# A.txt =&gt; A
+  CRC: 4046214375
+  AssetFileHash: caea7ff4da8c26db06dda68fe7fe81a9
+  TypeTreeHash: 1033bf7ddfd4c6d43e7a6382c0a0a61a
+</code></pre>
+<h4 id="typetreehash"><a class="header" href="#typetreehash">TypeTreeHash</a></h4>
+<p>ex) 스크립트 코드 변경</p>
+<pre><code class="language-yaml"># Aprefab.prefab(번들) - AScript.cs(번들로 할 수 없음.)
+# aprefab.manifest
+CRC: 420622857
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: bd07c562a9845e21ce9b377999a8d5e5
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: cb793a1a0e0d96bcd61e08b4b42ececd
+  Script: {fileID: 11500000, guid: 64be57d524a10794bb32a78c6b86769a, type: 3}
+
+
+# public int a = 10; 라인 추가.
+CRC: 2838598984
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: bd07c562a9845e21ce9b377999a8d5e5
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 9523d3cf1bd04d4ae7937ea9cae4ba0e
+  Script: {fileID: 11500000, guid: 64be57d524a10794bb32a78c6b86769a, type: 3}
+
+
+
+# public int a = 10; 라인 삭제.
+CRC: 3037027640
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: bd07c562a9845e21ce9b377999a8d5e5
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: cb793a1a0e0d96bcd61e08b4b42ececd
+  Script: {fileID: 11500000, guid: 64be57d524a10794bb32a78c6b86769a, type: 3}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="logging"><a class="header" href="#logging">logging</a></h1>
+<h2 id="unityenginedebug"><a class="header" href="#unityenginedebug">UnityEngine.Debug</a></h2>
+<ul>
+<li>
+<p><a href="https://docs.unity3d.com/ScriptReference/Debug.html">Debug</a></p>
+<ul>
+<li>Debug.unityLogger.logEnabled</li>
+</ul>
+</li>
+<li>
+<p><a href="https://docs.unity3d.com/ScriptReference/Logger.html">Logger</a></p>
+</li>
+<li>
+<p><a href="https://docs.unity3d.com/ScriptReference/ILogHandler.html">ILogHandler</a></p>
+</li>
+<li>
+<p>Attribute</p>
+<ul>
+<li><a href="https://docs.unity3d.com/ScriptReference/HideInCallstackAttribute.html">HideInCallstackAttribute</a></li>
+<li><a href="https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.conditionalattribute?view=net-8.0">ConditionalAttribute</a></li>
+</ul>
+</li>
+<li>
+<p>src</p>
+<ul>
+<li><a href="https://github.com/Unity-Technologies/UnityCsReference/blob/master/Runtime/Export/Logging/ILogHandler.cs">src: ILogHandler</a></li>
+<li><a href="https://github.com/Unity-Technologies/UnityCsReference/blob/master/Runtime/Export/Logging/DebugLogHandler.cs">src: DebugLogHandler</a></li>
+<li><a href="https://github.com/Unity-Technologies/UnityCsReference/blob/611307378c56a1b2f90eb1018332166cbe3c9c03/Runtime/Export/Scripting/StackTrace.cs#L154">https://github.com/Unity-Technologies/UnityCsReference/blob/611307378c56a1b2f90eb1018332166cbe3c9c03/Runtime/Export/Scripting/StackTrace.cs#L154</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="comunitylogging"><a class="header" href="#comunitylogging">com.unity.logging</a></h2>
+<ul>
+<li><a href="https://github.com/needle-mirror/com.unity.logging">github: com.unity.logging</a></li>
+<li><a href="https://github.com/needle-mirror/com.unity.logging/blob/master/CHANGELOG.md">CHANGELOG.md</a></li>
+<li>https://messagetemplates.org/
+<ul>
+<li>https://docs.unity3d.com/Packages/com.unity.logging@1.3/manual/logging-architecture.html</li>
+</ul>
+</li>
+<li>https://docs.unity3d.com/Packages/com.unity.logging@1.3/manual/formatting.html#alignment</li>
+<li><a href="https://docs.unity3d.com/Packages/com.unity.logging@1.3/api/Unity.Logging.HideInStackTrace.html">HideInStackTrace </a>
+<ul>
+<li>https://github.com/needle-mirror/com.unity.logging/blob/master/Runtime/Sinks/UnityEditorConsoleSink.cs</li>
+<li>https://github.com/Unity-Technologies/UnityCsReference/blob/master/Editor/Mono/ConsoleWindow.cs</li>
+</ul>
+</li>
+</ul>
+<p>https://docs.unity3d.com/Packages/com.unity.logging@1.3/manual/default-configuration.html</p>
+<pre><code>[{Timestamp}] {Level} | {Message}{NewLine}{Stacktrace}
+</code></pre>
+<h2 id="asset"><a class="header" href="#asset">asset</a></h2>
+<ul>
+<li><a href="https://assetstore.unity.com/packages/tools/utilities/editor-console-pro-11889">Editor Console Pro</a></li>
+<li><a href="https://assetstore.unity.com/packages/tools/gui/srdebugger-console-tools-on-device-27688">SRDebugger - Console &amp; Tools On-Device</a></li>
+</ul>
+<hr />
+<h2 id="collector"><a class="header" href="#collector">collector</a></h2>
+<pre><code class="language-elk">E L K
+E : elasticsearch (db 겸 query machine)
+L : logstash - collector | indexer
+K : Kibana ( UI viewer )
+
+docker - https://github.com/deviantony/docker-elk
+
+kibana plugin - realtime tail - https://github.com/sivasamyk/logtrail
+
+
+ElasticSearch
+http://localhost:9200/
+
+https://github.com/mobz/elasticsearch-head - 단순 테이블 보기
+
+LogStash
+logstash.bat -f logstash.conf
+입력 - input
+필터 - filter
+ grok을 이용 비정형 데이터에서 구조 도출
+ mutate
+ date
+출력 - output
+
+
+Kibana
+http://localhost:5601
+</code></pre>
+<p>https://github.com/grafana/loki - Loki is a horizontally-scalable, highly-available, multi-tenant log aggregation system
+https://github.com/grafana/grafana - ui Visualize</p>
+<ul>
+<li>NSSM
+<ul>
+<li>NSSM - the Non-Sucking Service Manager</li>
+<li>https://nssm.cc/download</li>
+<li>https://woony-sik.tistory.com/9</li>
+</ul>
+</li>
+</ul>
+<p>focus on pronunciation.
+https://www.amazon.com/dp/0133046850/ref=cm_sw_r_cp_awdb_l5R.ybCQE0NQR</p>
+<ul>
+<li><a href="https://github.com/ErnSur/Unity-Http-Debugger">https://github.com/ErnSur/Unity-Http-Debugger</a></li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="package-opensource"><a class="header" href="#package-opensource">package-opensource</a></h1>
 <ul>
@@ -346,6 +1582,13 @@
 <li>로컬라이즈</li>
 </ul>
 </li>
+</ul>
+<ul>
+<li><a href="asset/asset-paid.html#%EC%9C%A0%ED%8B%B8---%ED%95%84%EC%88%98">유틸 - 필수</a></li>
+<li><a href="asset/asset-paid.html#%EC%9C%A0%ED%8B%B8---%ED%95%84%EC%9A%94%EC%8B%9C">유틸 - 필요시</a></li>
+<li><a href="asset/asset-paid.html#%EC%9C%A0%ED%8B%B8---%EC%95%A0%EB%A7%A4%ED%95%A8">유틸 - 애매함</a></li>
+<li><a href="asset/asset-paid.html#ui">UI</a></li>
+<li><a href="asset/asset-paid.html#%ED%99%98%EA%B2%BD-3d">환경 3D</a></li>
 </ul>
 <h2 id="유틸---필수"><a class="header" href="#유틸---필수">유틸 - 필수</a></h2>
 <div class="table-wrapper"><table><thead><tr><th></th><th></th></tr></thead><tbody>
@@ -413,6 +1656,10 @@
 <tr><td><a href="https://assetstore.unity.com/packages/vfx/shaders/volumetric-light-beam-99888?locale=ko-KR">Volumetric Light Beam</a></td><td></td></tr>
 </tbody></table>
 </div><div style="break-before: page; page-break-before: always;"></div><h1 id="에셋-무료"><a class="header" href="#에셋-무료">에셋-무료</a></h1>
+<ul>
+<li><a href="asset/asset-free.html#%EC%9C%A0%ED%8B%B8---%ED%95%84%EC%9A%94%EC%8B%9C">유틸 - 필요시</a></li>
+<li><a href="asset/asset-free.html#script">Script</a></li>
+</ul>
 <h2 id="유틸---필요시-1"><a class="header" href="#유틸---필요시-1">유틸 - 필요시</a></h2>
 <div class="table-wrapper"><table><thead><tr><th></th><th></th></tr></thead><tbody>
 <tr><td><a href="https://github.com/Cysharp/UniTask">UniTask</a></td><td></td></tr>
@@ -447,7 +1694,7 @@
 </li>
 <li><a href="https://www.audiokinetic.com/ko/">Wwise</a></li>
 </ul>
-<h2 id="ref-1"><a class="header" href="#ref-1">Ref</a></h2>
+<h2 id="ref-3"><a class="header" href="#ref-3">Ref</a></h2>
 <ul>
 <li><a href="https://danikog.github.io/GameAudioTable/">https://danikog.github.io/GameAudioTable/</a></li>
 </ul>
@@ -504,6 +1751,23 @@ event.Play();</p>
 <tr><td>FMOD Ex</td><td>low level api</td></tr>
 <tr><td>FMOD Event System</td><td>FMOD Ex 상위 레이어, FMOD Designer로 제작된 데이터 재생</td></tr>
 <tr><td>FMOD Designer</td><td>에디터</td></tr>
+</tbody></table>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="컴파일-경고"><a class="header" href="#컴파일-경고">컴파일 경고</a></h1>
+<p>유니티 흔히 보게 되는 경고</p>
+<div class="table-wrapper"><table><thead><tr><th>Warning</th><th>type</th><th></th></tr></thead><tbody>
+<tr><td>4014</td><td>async</td><td>Because this call is not awaited</td></tr>
+<tr><td>1998</td><td>async</td><td>This async method lacks 'await'</td></tr>
+<tr><td>0219</td><td>unused</td><td>The variable is assigned but its value is never used</td></tr>
+<tr><td>0168</td><td>unused</td><td>The variable is declared but never used</td></tr>
+<tr><td>0067</td><td>unused</td><td>The event 'event' is never used</td></tr>
+<tr><td>0414</td><td>unused</td><td>field assigned but value is never used</td></tr>
+<tr><td>0612</td><td>obsolete</td><td>'member' is obsolete</td></tr>
+<tr><td>0618</td><td>obsolete</td><td>'member' is obsolete: 'text'</td></tr>
+<tr><td>0109</td><td>hides</td><td>does not hide an accessible member. The new keyword is not required.</td></tr>
+<tr><td>0108</td><td>hides</td><td>hides inherited member Use the new keyword if hiding was intended.</td></tr>
+<tr><td>0114</td><td>hides</td><td>hides inherited member . To make the current member override that implementation, add the override keyword. Otherwise add the new keyword.</td></tr>
+<tr><td>0162</td><td></td><td>Unreachable code detected</td></tr>
+<tr><td>0252</td><td></td><td>Possible unintended reference comparison; to get a value comparison, cast the left hand side to type 'Object'</td></tr>
 </tbody></table>
 </div><div style="break-before: page; page-break-before: always;"></div><h1 id="adb"><a class="header" href="#adb">ADB</a></h1>
 
