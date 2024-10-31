@@ -1,88 +1,69 @@
-# scriptablebuildpipeline
+# Assetbundle
 
-## 로딩
+## 목차
+
+<!-- toc -->
+
+## AssetBundle이란
+
+| .           | .                                                              |
+| ----------- | -------------------------------------------------------------- |
+| Asset       | prefab, scene, texture, material, animation, audio, script ... |
+| AssetBundle | group of assets in single file.                                |
+
+<br />
+
+| 버전    | 특징                      | 압축      |
+| ------- | ------------------------- | --------- |
+| 2018.4+ | Scriptable Build Pipeline | lzma, lz4 |
+| 2018.2+ | Addressables              |           |
+| 5.3     | lz4 지원                  | lzma, lz4 |
+| 5.0     | AssetBundleManifest 도입  | lzma      |
+| 4.x     | Push/PopAssetDependencies | lzma      |
+
+- 에셋번들을 다룰때에는 의존성(Dependency)관리가 관건
+
+
+## 방식
+
+### 예전방식 (Unity 4.x)
+
+에셋번들 의존성 관리를 Push/Pop으로 수동으로 관리를 했었다.
 
 ``` cs
-AssetBundleCreateRequest abcr = AssetBundle.LoadFromFileAsync(fpath);               // 비동기: 번들로드(파일로부터)
-AssetBundle ab = abcr.assetBundle;
-AssetBundleRequest abr = ab.LoadAssetAsync<CompatibilityAssetBundleManifest>(name); // 비동기: 에셋로드(번들로부터)
-UnityEngine.Object obj = abr.asset;
-_manifest = obj as CompatibilityAssetBundleManifest;
+BuildPipeline.PushAssetDependencies();
+BuildPipeline.BuildAssetBundle(AssetDatabase.LoadMainAssetAtPath("Assets/ShadersList.prefab"), null, "WebPlayer/ShadersList.unity3d", options);
+BuildPipeline.PopAssetDependencies();
 ```
 
-- 유니티 AssetBundle의 문제
-  - 레퍼런스 카운트관리로 로드 언로드 기능이 없어서 중복 로드가 가능
-  - 비동기 로드가 2개 있는데 이게 비동기여서 동기화 문제를 처리하기 곤란
-    - 파일에서 번들을 로드하는 AssetBundleCreateRequest
-    - 번들에서 에셋을 로드하는 AssetBundleRequest
 
-- 메인아이디어
-  - Request_BundleLoad로 AssetBundleRef를 만들고 레퍼런스증가 후 AssetBundle(unity)을 로드하고 Bundle에 넘겨줌
-  - Request_BundleUnload로 Bundle을 반환받아 AssetBundleRef를 하나 내리면서 아무도 안쓰면 실제 AssetBundle 언로드
-  - 전부 콜백 및 테스크로 관리하게되면 동기화 문제를 해결하기 힘듬
-    - 싱글 업데이트 루프에서 다음 요청을 관리하여 동기화를 한다
-      - Request_BundleLoad // Request_BundleUnload // AssetBundle(unity)
+### 현재방식 (Unity 5.x ~ )
 
-http://blog.coolcoding.cn/?p=2148
+- 알아서 의존성 관리를 해준다.
+- 번들검색
+  - 프로젝트 윈도우(Ctrl + F5)에서 bundle 검색시 검색창에 `b:`를 입력
+- 번들 지정
+  - 수동은 인스펙터 하단에 `Asset Labels > AssetBundle [name] [variant]` 
+  - 코드지정은 `AssetBundleBuild`이용.
 
+```cs
+// ref: http://docs.unity3d.com/ScriptReference/BuildPipeline.BuildAssetBundles.html
+// ref: http://docs.unity3d.com/ScriptReference/BuildAssetBundleOptions.html
 
-            
+public static AssetBundleManifest
+  BuildAssetBundles(
+      string outputPath,
+      BuildAssetBundleOptions assetBundleOptions = BuildAssetBundleOptions.None,
+      BuildTarget targetPlatform = BuildTarget.WebPlayer
+);
 
-
-## 셰이더
-
-- 로딩: https://docs.unity3d.com/Manual/shader-loading.html
-- [[유니티 TIPS] 셰이더 배리언트 A to Z](https://www.youtube.com/watch?v=v3v3Q4TqMeM)
-
-- Always Includes
-  - Project Settings > Graphics > Built-in Shader Settings > Always Includes
-
-- ShaderVariantCollection
-  - https://blog.unity.com/engine-platform/stripping-scriptable-shader-variants
-  - https://note.com/wotakuro/n/n5bbd88c62d61
-  - IPreprocessShaders
-
-셰이더 키워드
-- FrameDebugger 에서도 사용중인 키워드 확인가능
-- 활성화
-  - Material.EnableKeywrod
-  -  Shader.EnableKeyword
-
-  - Project Settings > Graphics > Shader Loading > Preloaded Shaders
-    - 게임을 로드하는 동안 preload
-
-런타임에서는 플랫폼에 관계없이 셰이더 객체의 내용은 장면에 들어갈 때 메모리에 로드되지만 실제로 처음 렌더링이 호출될 때 컴파일되고 컴파일이 완료된 후 캐시됩니다.
-
-warmup
-- ShaderVariantCollection.WarmUp
-- ShaderWarmup.WarmupShader
-- ShaderWarmup.WarmupShaderFromCollection
-
-https://forum.unity.com/threads/new-shader-warmup-api.1231287/
-https://tsubakit1.hateblo.jp/entry/2018/11/18/001612
-
-
-https://blog.unity.com/technology/optimizing-loading-performance-understanding-the-async-upload-pipeline
-
-
-# Fxxxxxx AssetBundle
-
-asset : prefab, scene, texture, material, animation, audio, script ...
-assetbundle : group of assets in single file.
-
-=======================================
-
-경우에따라 1:1로 묶거나, 그룹핑하는 경우에는 정책이 필요.
-
-
-
-
-
-BuildingAssetBundles in 5.x
-http://docs.unity3d.com/Manual/BuildingAssetBundles5x.html
-
-
-
+public static AssetBundleManifest
+  BuildAssetBundles(
+      string outputPath,
+      AssetBundleBuild[] builds,
+      BuildAssetBundleOptions assetBundleOptions = BuildAssetBundleOptions.None,
+      BuildTarget targetPlatform = BuildTarget.WebPlayer
+);
 
 
 AssetBundleBuild
@@ -90,10 +71,6 @@ http://docs.unity3d.com/ScriptReference/AssetBundleBuild.html
     assetBundleName	AssetBundle name.
     assetBundleVariant	AssetBundle variant.
     assetNames	Asset names which belong to the given AssetBundle.
-
-
-
-
 
 AssetBundleManifest
 http://docs.unity3d.com/ScriptReference/AssetBundleManifest.html
@@ -103,14 +80,92 @@ http://docs.unity3d.com/ScriptReference/AssetBundleManifest.html
     GetAssetBundleHash	Get the hash for the given AssetBundle.
     GetDirectDependencies	Get the direct dependent AssetBundles for the given AssetBundle.
 
+```
+
+| BuildAssetBundleOptions (Flag)          | 설명                                                                                             |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| None                                    | .                                                                                                |
+| UncompressedAssetBundle                 | 압축안함                                                                                         |
+| DisableWriteTypeTree                    | type information 포함 안함                                                                       |
+| DeterministicAssetBundle                | Builds an asset bundle using a hash for the id of the object stored in the asset bundle.         |
+| ForceRebuildAssetBundle                 | 강제 재빌드                                                                                      |
+| IgnoreTypeTreeChanges                   | Ignore the type tree changes when doing the incremental build check.                             |
+| AppendHashToAssetBundleName             | Append the hash to the assetBundle name.                                                         |
+| ChunkBasedCompression                   | Use chunk-based LZ4 compression when creating the AssetBundle.                                   |
+| StrictMode                              | 에러시 빌드 안함                                                                                 |
+| DryRunBuild                             | dry run build.                                                                                   |
+| DisableLoadAssetByFileName              | Disables Asset Bundle LoadAsset by file name.                                                    |
+| DisableLoadAssetByFileNameWithExtension | Disables Asset Bundle LoadAsset by file name with extension.                                     |
+| AssetBundleStripUnityVersion            | Removes the Unity Version number in the Archive File & Serialized File headers during the build. |
+
+#### 현재방식 문제
+
+- 레퍼런스 카운트관리로 로드 언로드 기능이 없어서 중복 로드가 가능
+- 비동기 로드가 2개 있는데 이게 비동기여서 동기화 문제를 처리하기 곤란
+  - 파일에서 번들을 로드하는 AssetBundleCreateRequest
+  - 번들에서 에셋을 로드하는 AssetBundleRequest
 
 
+## 구조
 
-lagacy
-BuildPipeline.PushAssetDependencies();
-BuildPipeline.PopAssetDependencies();
+### AssetBundleManifest
 
-절차가 복잡!
+- include all the assetbundles
+- include all the assetbundle dependencies
+
+### .manifest
+
+- CRC
+- Asset names
+- Dependent AssetBundle names
+- Hash
+- ClassTypes
+
+### AssetBundle을 다시 빌드하는 경우
+
+- type tree가 변경되었을 경우.
+- asset 파일이 변경되었을 경우
+  - runtime class type tree change
+    - upgrade to a new version of unity-asset-bundles/
+  - script type tree change
+    - change the public members ...
+
+### Lz4 지원
+
+|       | BuildCompression | 압축률 | 해제시간 | 기타                                      |
+| ----- | ---------------- | ------ | -------- | ----------------------------------------- |
+| Lzma  | LZMA             | 큼     | 큼       | 통으로 압축                               |
+| Lz4HC | LZ4              | 중간   | 중간     | Lz4에서 압축률을 높인것(High-Compression) |
+| Lz4   | LZ4Runtime       | 작음   | 작음     | Chunk단위 압축/로드                       |
+
+| 번들 압축타입별 성능            | LZ4일때                    | LZMA일때                                                |
+| ------------------------------- | -------------------------- | ------------------------------------------------------- |
+| assetBundle.LoadFromFile(Async) | 디스크 읽기(Mem: 헤더크기) | 디스크 읽기 + LZMA 해제 + LZ4압축(Mem: LZ4 bundle size) |
+
+- `AssetBundle.LoadFromFileAsync`은 LZMA일때 메모리를 사용한다.
+  - `AssetBundle.RecompressAssetBundleAsync`를 이용하여 LZ4로 변환하여 저장하여 성능향상을 도모할 수 있다.
+  - BuildCompression.LZ4Runtime 처럼 뒤에 Runtime이 붙는걸로 변환해야하며 아니면 ArgumentException 이 뜬다.
+
+
+## UnityWebRequest(UWR)와 Caching
+
+- 2017.1 부터 캐싱 api가 확장됨 https://docs.unity3d.com/ScriptReference/Caching.html
+
+If you provide a version parameter to the UWR API, Unity stores your AssetBundle data in the Disk Cache. If you do not provide a version parameter, Unity uses the Memory Cache. The version parameter can be either a version number or a hash.
+
+| Caching.compressionEnabled |                                                                                                                                                               |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| true                       | Unity applies LZ4 compression when it writes AssetBundles to disk for all subsequent downloads. It does not compress existing uncompressed data in the cache. |
+| false                      | Unity applies no compression when it writes AssetBundles to disk.                                                                                             |
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+|      |                                                                                |                                                                  |
+| ---- | ------------------------------------------------------------------------------ | ---------------------------------------------------------------- |
+| CRC  | CRC32                                                                          | bytes                                                            |
+| Hash | [SpookyHashV2](https://en.wikipedia.org/wiki/Jenkins_hash_function#SpookyHash) | asset files, type trees, buildtarget, buildoption, callbacks ... |
 
 
 
@@ -127,8 +182,7 @@ AppendHashToAssetBundleName
  - get different name when bundle changes
  - easy to detect if you want to upload to CDN
  
- 
- 
+
 =======================================
 Editor Simulation
 Use assetbundle without actually building them
@@ -136,14 +190,6 @@ GetAssetPathsFromAssetBundleAndAssetName
 
 
 =======================================
-
-
-AssetBundles rebuild
-- asset file changes
-- type tree changes
- - runtime class type tree change : upgrade to a new version of unity-asset-bundles/
- - script type tree change : change the public members ...
-
 
 assetbundle hash
  - asset files
@@ -155,25 +201,8 @@ assetbundle hash
 
 
 
- yaml : https://en.wikipedia.org/wiki/YAML
- 
  % name을 뺐을시 빌드되는 bundle의 삭제는 일어나지 않았다.
 =======================================
-
-
-
-
-Unite 2014 - New AssetBundle Build System in Unity 5
-https://www.youtube.com/watch?v=gVUgF2ZHveo
-
-
-http://unity3d.com/learn/tutorials/modules/intermediate/live-training-archive/unity5-asset-bundles
-
-
-
-Live Training April 29th, 2015: Working with Asset Bundles in Unity 5
-https://www.youtube.com/watch?v=6D9AbQodeVg
-
 
 
 AppendHashToAssetBundleName
@@ -181,10 +210,7 @@ AppendHashToAssetBundleName
 
 
 
-
-
 A.assetBundleName  = "group0/a"
-
 
 assetBundleName 은 소문자만 올 수 있다.(under_score방식으로 내이밍을 지정하야할듯.)
 
@@ -192,9 +218,6 @@ heirachy search filter
 b: - bundle
 
 b:group0 A
-
-
-
 
 
 # Manifest
@@ -217,57 +240,10 @@ include all the assetbundle dependencies
 delta building
 http://blog.juiceboxmobile.com/2013/06/19/per-asset-versioning-with-unity-asset-bundles/
 
----
-
-# Asset과 AssetBundle
-
-* Asset : prefab, scene, texture, material, animation, audio, script ...
-* AssetBundle : group of assets in single file.
- - 경우에따라 1:1로 묶거나, 그룹핑하는 경우에는 정책이 필요.
 
 
-
----
-
-# lagacy
-* BuildPipeline.PushAssetDependencies();
-* BuildPipeline.PopAssetDependencies();
-* 절차가 복잡!
-
-
-
-
----
-# 새로운 빌드절차
-
-
-
-----
-# BuildPipeline.BuildAssetBundles
-* http://docs.unity3d.com/ScriptReference/BuildPipeline.BuildAssetBundles.html
-
-```cs
-public static AssetBundleManifest
-  BuildAssetBundles(
-      string outputPath,
-      BuildAssetBundleOptions assetBundleOptions = BuildAssetBundleOptions.None,
-      BuildTarget targetPlatform = BuildTarget.WebPlayer
-);
-
-
-public static AssetBundleManifest
-  BuildAssetBundles(
-      string outputPath,
-      AssetBundleBuild[] builds,
-      BuildAssetBundleOptions assetBundleOptions = BuildAssetBundleOptions.None,
-      BuildTarget targetPlatform = BuildTarget.WebPlayer
-);
-```
-
-
-----
 # BuildAssetBundleOptions
-http://docs.unity3d.com/ScriptReference/BuildAssetBundleOptions.html
+
 
 ```txt
     CollectDependencies : on
@@ -334,7 +310,6 @@ r_out
     b.manifest
 ```
 
----
 # a.manifest
 ```yaml
 ManifestFileVersion: 0
@@ -370,15 +345,6 @@ Dependencies: []
 * include all the assetbundles
 * include all the assetbundle dependencies
 
-
-----
-# AssetBundle을 다시 빌드하는 경우
-* type tree가 변경되었을 경우.
-* asset 파일이 변경되었을 경우
- - runtime class type tree change
-    - upgrade to a new version of unity-asset-bundles/
- - script type tree change
-    - change the public members ...
 
 ----
 # assetbundle hash의 구성 요소
@@ -477,110 +443,6 @@ b: - bundle
 # 주의사항
 * name 변경시, 사전빌드되는 bundle의 삭제는 일어나지 않았다.
 
-
----
-# TODO
-* 데이터검증
- - Excel과 AssetBundleManifest간의 유효성 검증.
-* assetbundle test환경
- - assetbundle될 asset을 assetbundle로 로드
- - offline assetbundle을 로드
- - online assetbundle을 로드
-* chatops&automate - delta building system
- - 메신져를 통해 빌드명령
- - 변경된 부분만 빌드
- - delta building된 결과물을 타겟저장소로 업로드 및 백업(cdn같은 경우, 중복파일 삭제 처리)
-* loading 정책
- - 시작할때 통짜로 불러올것인가?
- - lazy로 갈것인가?
-
----
-# 작업플로우(WIP)
-
-* 경험상 `리소스패치`, `데이터패치`, `빌드` 명령에 해당하는 작업이 필요하다.
-* 작업자가 chatops로 채팅창에
-
-STAGE: DEV, ALPHA, Live
-COUNTRY: KOR, JPN, ENG // 보통 국가 나중에 작업이 어느정도 진행되면 추가하게된다.
-MARKET: GOOGLE, NAVER, TSTORE // 보통 마켓은 나중에 작업이 어느정도 진행되면 추가하게된다.
-
-!리소스패치 {COUNTRY} {STAGE}
-!데이터패치 {COUNTRY} {STAGE}
-!빌드 {COUNTRY} {STAGE}
-
-* 채팅봇이 CI툴에 작업을 알려준다.
-* CI툴에서 해당 작업을 실행시킨다.
-* CI툴의 결과를 채팅봇을 통해 작업자에게 알려준다.
-
-
-* 리소스패치
-* 데이터패치
-- 에셋번들 금지.
-- 데이터패치는 상당히 빈번하게 일어나게 됨으로 에셋번들로 묶으려면
-* 빌드
-
-
-----
-## step1
-작업자가 bundle/dlg_hello.prefab을 수정후, apply
-
-## step2
-bundle/dlg_hello.prefab을 커밋
-svn hook을 이용하여
-jenkins의 job을 실행시킨다.
-
-## step3, step4
-* Delta Bundle Generation
-* asset manifest generation
-
-* 빌드머신
-```
-assetbundle/
-  ASSETBUNDLE_MANIFEST.txt
-   - include update date
-  patch
-  patch.manifest
-  all/
-    test
-    test.manifest
-    dlg_hello
-    dlg_hello.manifest
-  kor/
-    kor_a
-    kor_a.manifest
-  jpn/
-    jpn_a
-    jpn_a.manifest
-```
-
-* 서비스 cdn에 데이터를 올리는 경우 이 단계에서, 에셋 데이터 백업을 수행하는게 좋다.
-
-## step5
-cdn sync
-
-* ssh라면 rsync, ftp라면 명령어 찾아야함(덮어쓰는게아니라, 지운다음 올려야되서)
-
-* CDN - KOR
-```
-CDNROOT/
-  IOS/
-    ingame.db
-    ASSETBUNDLE_MANIFEST.txt
-    assetbundle/
-      test
-      dlg_hello
-      kor_a
-```
-
-
-## step6
-client patch download
-
-
-
-
----
-
 ## Ref
 
 - [BuildingAssetBundles in 5.x](http://docs.unity3d.com/Manual/BuildingAssetBundles5x.html)
@@ -589,13 +451,58 @@ client patch download
 - [WORKING WITH ASSET BUNDLES IN UNITY 5](http://unity3d.com/learn/tutorials/modules/intermediate/live-training-archive/unity5-asset-bundles)
 - [Live Training April 29th, 2015: Working with Asset Bundles in Unity 5](https://www.youtube.com/watch?v=6D9AbQodeVg)
 - [Per Asset Versioning with Unity Asset Bundles](http://blog.juiceboxmobile.com/2013/06/19/per-asset-versioning-with-unity-asset-bundles/)
-- https://qiita.com/k7a/items/d27640ac0276214fc850
+- [AssetBundleを完全に理解する](https://qiita.com/k7a/items/d27640ac0276214fc850)
 - [AssetBundles-Dependencies](https://docs.unity3d.com/Manual/AssetBundles-Dependencies.html)
-
----
+- <https://github.com/Perfare/AssetStudio>
+- [에셋번들 실전 가이드 (AssetBundle Best Practices)](https://www.youtube.com/watch?v=Lx61ZEKEvnQ)
 
 
 ## Etc
-https://www.twblogs.net/a/5c2a27f0bd9eee01606d384a
-https://tsubakit1.hateblo.jp/entry/2016/07/20/235900
-https://zhuanlan.zhihu.com/p/369264807
+[【Unity】AssetBundleのManifestファイルに書かれている内容について](https://tsubakit1.hateblo.jp/entry/2016/07/20/235900)
+[【Unity】SBP - Scriptable Build Pipeline 郡墙](https://zhuanlan.zhihu.com/p/369264807)
+
+
+- https://github.com/HearthSim/UnityPack
+- https://github.com/lujian101/AssetBundleDecompressor
+
+
+
+------------------
+
+        
+
+
+## 셰이더
+
+- 로딩: https://docs.unity3d.com/Manual/shader-loading.html
+- [[유니티 TIPS] 셰이더 배리언트 A to Z](https://www.youtube.com/watch?v=v3v3Q4TqMeM)
+
+- Always Includes
+  - Project Settings > Graphics > Built-in Shader Settings > Always Includes
+
+- ShaderVariantCollection
+  - https://blog.unity.com/engine-platform/stripping-scriptable-shader-variants
+  - https://note.com/wotakuro/n/n5bbd88c62d61
+  - IPreprocessShaders
+
+셰이더 키워드
+- FrameDebugger 에서도 사용중인 키워드 확인가능
+- 활성화
+  - Material.EnableKeywrod
+  -  Shader.EnableKeyword
+
+  - Project Settings > Graphics > Shader Loading > Preloaded Shaders
+    - 게임을 로드하는 동안 preload
+
+런타임에서는 플랫폼에 관계없이 셰이더 객체의 내용은 장면에 들어갈 때 메모리에 로드되지만 실제로 처음 렌더링이 호출될 때 컴파일되고 컴파일이 완료된 후 캐시됩니다.
+
+warmup
+- ShaderVariantCollection.WarmUp
+- ShaderWarmup.WarmupShader
+- ShaderWarmup.WarmupShaderFromCollection
+
+https://forum.unity.com/threads/new-shader-warmup-api.1231287/
+https://tsubakit1.hateblo.jp/entry/2018/11/18/001612
+
+
+https://blog.unity.com/technology/optimizing-loading-performance-understanding-the-async-upload-pipeline

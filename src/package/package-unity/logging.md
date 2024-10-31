@@ -1,8 +1,7 @@
-# log
+# logging
 
-- unity logging도 있긴한데 그냥 logging은 따로 라이브러리 만드는게 좋을듯.
 
-### UnityEngine
+## UnityEngine.Debug
 
 - [Debug](https://docs.unity3d.com/ScriptReference/Debug.html)
   - Debug.unityLogger.logEnabled
@@ -17,20 +16,30 @@
   - [src: DebugLogHandler](https://github.com/Unity-Technologies/UnityCsReference/blob/master/Runtime/Export/Logging/DebugLogHandler.cs)
   - <https://github.com/Unity-Technologies/UnityCsReference/blob/611307378c56a1b2f90eb1018332166cbe3c9c03/Runtime/Export/Scripting/StackTrace.cs#L154>
 
-### com.unity.logging
+## com.unity.logging
 
 - [github: com.unity.logging](https://github.com/needle-mirror/com.unity.logging)
 - [CHANGELOG.md](https://github.com/needle-mirror/com.unity.logging/blob/master/CHANGELOG.md)
+- https://messagetemplates.org/
+  - https://docs.unity3d.com/Packages/com.unity.logging@1.3/manual/logging-architecture.html
+- https://docs.unity3d.com/Packages/com.unity.logging@1.3/manual/formatting.html#alignment
 - [HideInStackTrace ](https://docs.unity3d.com/Packages/com.unity.logging@1.3/api/Unity.Logging.HideInStackTrace.html)
   - https://github.com/needle-mirror/com.unity.logging/blob/master/Runtime/Sinks/UnityEditorConsoleSink.cs
   - https://github.com/Unity-Technologies/UnityCsReference/blob/master/Editor/Mono/ConsoleWindow.cs
 
-### asset
+
+https://docs.unity3d.com/Packages/com.unity.logging@1.3/manual/default-configuration.html
+```
+[{Timestamp}] {Level} | {Message}{NewLine}{Stacktrace}
+```
+
+## asset
 
 - [Editor Console Pro](https://assetstore.unity.com/packages/tools/utilities/editor-console-pro-11889)
 - [SRDebugger - Console & Tools On-Device](https://assetstore.unity.com/packages/tools/gui/srdebugger-console-tools-on-device-27688)
 
 
+----------
 
 ## collector
 

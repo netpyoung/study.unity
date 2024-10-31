@@ -1,6 +1,6 @@
 # Deploy
 
-- hockeyapp >> appcenter
+- hockeyapp(deprecated) >> appcenter(deprecated)
   - https://appcenter.ms/
 - firebase
   - https://firebase.google.com/docs/app-distribution

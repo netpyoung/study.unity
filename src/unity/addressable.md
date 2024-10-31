@@ -1,8 +1,13 @@
 # Addressable
 
+AAS (Addressable Asset System )
+
 - unity's addressable은 쓰레기이니까 대충 정리만 해두고 관심같지말자.
 
-AAS (Addressable Asset System )
+
+
+- https://docs.unity3d.com/Packages/com.unity.addressables@1.18/manual/MemoryManagement.html
+
 
 
 로컬
@@ -238,11 +243,4 @@ PlayMode
 [AssetReferenceLabelRestriction("SampleLabel")]
 ```
 
-=====================
-호스팅
 
-
-
-
-=============etc
-Code coverage - package
