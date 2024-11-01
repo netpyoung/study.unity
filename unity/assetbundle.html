@@ -89,7 +89,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../Index.html">들어가며</a></li><li class="chapter-item expanded affix "><li class="part-title">Unity</li><li class="chapter-item expanded "><a href="../unity/assetbundle.html" class="active">AssetBundle</a></li><li class="chapter-item expanded "><a href="../unity/accelerator.html">Accelerator</a></li><li class="chapter-item expanded "><a href="../unity/attribute.html">Attribute</a></li><li class="chapter-item expanded affix "><li class="part-title">Package</li><li class="chapter-item expanded "><a href="../package/package.html">package</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../package/package-unity.html">package-unity</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../package/package-unity/scriptablebuildpipeline-sbp.html">com.unity.scriptablebuildpipeline</a></li><li class="chapter-item expanded "><a href="../package/package-unity/logging.html">com.unity.logging</a></li></ol></li><li class="chapter-item expanded "><a href="../package/package-opensource.html">package-opensource</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">에셋</li><li class="chapter-item expanded "><a href="../asset/asset-paid.html">에셋-유료</a></li><li class="chapter-item expanded "><a href="../asset/asset-free.html">에셋-무료</a></li><li class="chapter-item expanded "><a href="../asset/audio/audio.html">Audio</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../asset/audio/fmod.html">FMOD</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Etc</li><li class="chapter-item expanded "><a href="../etc/compile-warning.html">compile-warning</a></li><li class="chapter-item expanded affix "><li class="part-title">디버깅</li><li class="chapter-item expanded "><a href="../debugging/adb.html">ADB</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../Index.html">들어가며</a></li><li class="chapter-item expanded affix "><li class="part-title">Unity</li><li class="chapter-item expanded "><a href="../unity/assetbundle.html" class="active">AssetBundle</a></li><li class="chapter-item expanded "><a href="../unity/accelerator.html">Accelerator</a></li><li class="chapter-item expanded "><a href="../unity/attribute.html">Attribute</a></li><li class="chapter-item expanded "><a href="../unity/path.html">path</a></li><li class="chapter-item expanded affix "><li class="part-title">Package</li><li class="chapter-item expanded "><a href="../package/package.html">package</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../package/package-unity.html">package-unity</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../package/package-unity/scriptablebuildpipeline-sbp.html">com.unity.scriptablebuildpipeline</a></li><li class="chapter-item expanded "><a href="../package/package-unity/logging.html">com.unity.logging</a></li></ol></li><li class="chapter-item expanded "><a href="../package/package-opensource.html">package-opensource</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">에셋</li><li class="chapter-item expanded "><a href="../asset/asset-paid.html">에셋-유료</a></li><li class="chapter-item expanded "><a href="../asset/asset-free.html">에셋-무료</a></li><li class="chapter-item expanded "><a href="../asset/audio/audio.html">Audio</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../asset/audio/fmod.html">FMOD</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Etc</li><li class="chapter-item expanded "><a href="../etc/compile-warning.html">compile-warning</a></li><li class="chapter-item expanded affix "><li class="part-title">디버깅</li><li class="chapter-item expanded "><a href="../debugging/adb.html">ADB</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -203,16 +203,15 @@
 </ul>
 </li>
 <li><a href="#unitywebrequestuwr%EC%99%80-caching">UnityWebRequest(UWR)와 Caching</a></li>
+<li><a href="#assetbundleunload">AssetBundle.Unload</a></li>
 <li><a href="#-name%EC%9D%84-%EB%BA%90%EC%9D%84%EC%8B%9C-%EB%B9%8C%EB%93%9C%EB%90%98%EB%8A%94-bundle%EC%9D%98-%EC%82%AD%EC%A0%9C%EB%8A%94-%EC%9D%BC%EC%96%B4%EB%82%98%EC%A7%80-%EC%95%8A%EC%95%98%EB%8B%A4">% name을 뺐을시 빌드되는 bundle의 삭제는 일어나지 않았다.</a></li>
 <li><a href="#manifest-1">Manifest</a></li>
 <li><a href="#single-manifest-file">Single manifest file</a></li>
 <li><a href="#buildassetbundleoptions">BuildAssetBundleOptions</a></li>
-<li><a href="#assetbundlebuild">AssetBundleBuild</a></li>
-<li><a href="#assetbundlemanifest-1">AssetBundleManifest</a></li>
 <li><a href="#%EC%97%90%EC%85%8B%EB%B2%88%EB%93%A4-%EB%B9%8C%EB%93%9C">에셋번들 빌드</a></li>
 <li><a href="#amanifest">a.manifest</a></li>
 <li><a href="#manifest-2">Manifest</a></li>
-<li><a href="#assetbundlemanifest-2">AssetBundleManifest</a></li>
+<li><a href="#assetbundlemanifest-1">AssetBundleManifest</a></li>
 <li><a href="#assetbundle-hash%EC%9D%98-%EA%B5%AC%EC%84%B1-%EC%9A%94%EC%86%8C">assetbundle hash의 구성 요소</a>
 <ul>
 <li><a href="#crccyclic-redundancy-check">CRC(Cyclic redundancy check)</a></li>
@@ -371,7 +370,7 @@ http://docs.unity3d.com/ScriptReference/AssetBundleManifest.html
 </tbody></table>
 </div>
 <ul>
-<li><code>AssetBundle.LoadFromFileAsync</code>은 LZMA일때 메모리를 사용한다.
+<li><code>AssetBundle.LoadFromFile(Async)</code>은 LZMA일때 메모리를 사용한다.
 <ul>
 <li><code>AssetBundle.RecompressAssetBundleAsync</code>를 이용하여 LZ4로 변환하여 저장하여 성능향상을 도모할 수 있다.</li>
 <li>BuildCompression.LZ4Runtime 처럼 뒤에 Runtime이 붙는걸로 변환해야하며 아니면 ArgumentException 이 뜬다.</li>
@@ -382,13 +381,53 @@ http://docs.unity3d.com/ScriptReference/AssetBundleManifest.html
 <ul>
 <li>2017.1 부터 캐싱 api가 확장됨 https://docs.unity3d.com/ScriptReference/Caching.html</li>
 </ul>
-<p>If you provide a version parameter to the UWR API, Unity stores your AssetBundle data in the Disk Cache. If you do not provide a version parameter, Unity uses the Memory Cache. The version parameter can be either a version number or a hash.</p>
+<pre><code class="language-cs">using(var uwr = UnityWebRequestAssetBundle.GetAssetBundle("www.bundle"))
+{
+    yield return uwr.SendWebRequest();
+    var bundle = DownloadHandlerAssetBundle.GetContent(uwr);
+}
+</code></pre>
+<ul>
+<li><code>public static Networking.UnityWebRequest GetAssetBundle(string uri, uint version, uint crc);</code>
+<ul>
+<li>If you provide a version parameter to the UWR API, Unity stores your AssetBundle data in the Disk Cache.</li>
+<li>If you do not provide a version parameter, Unity uses the Memory Cache. The version parameter can be either a version number or a hash.</li>
+<li>The version parameter can be either a version number or a hash</li>
+</ul>
+</li>
+</ul>
 <div class="table-wrapper"><table><thead><tr><th>Caching.compressionEnabled</th><th></th></tr></thead><tbody>
 <tr><td>true</td><td>Unity applies LZ4 compression when it writes AssetBundles to disk for all subsequent downloads. It does not compress existing uncompressed data in the cache.</td></tr>
 <tr><td>false</td><td>Unity applies no compression when it writes AssetBundles to disk.</td></tr>
 </tbody></table>
+</div><div class="table-wrapper"><table><thead><tr><th>Cache</th><th></th></tr></thead><tbody>
+<tr><td>Memory</td><td>Cache stores AssetBundles in UncompressedRuntime format in RAM.</td></tr>
+<tr><td>Disk</td><td>Cache stores fetched AssetBundles on writable media in the compression format described later.</td></tr>
+</tbody></table>
 </div>
+<p>AssetBundle.RecompressAssetBundleAsync to rewrite an LZMA AssetBundle on disk.</p>
+<ul>
+<li>다운받은 에셋
+<ul>
+<li>LZMA
+<ul>
+<li>압축해제하거나 LZ4로 캐시에 저장 - Caching.compressionEnabled 설정에 영향받음</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 <hr />
+<h2 id="assetbundleunload"><a class="header" href="#assetbundleunload">AssetBundle.Unload</a></h2>
+<ul>
+<li><a href="https://docs.unity3d.com/Manual/AssetBundles-Native.html">Using AssetBundles Natively</a></li>
+<li>AssetBundle 관리에 대해 이해해야 할 가장 중요한 것은 AssetBundle.Unload(bool) 또는 AssetBundle.UnloadAsync(bool)을 호출할 때 와 함수 호출에 true 또는 false를 전달해야 하는지 여부.
+<ul>
+<li>인수는 이 AssetBundle에서 인스턴스화된 모든 Object도 언로드할지 나타냄</li>
+<li>false시 연결이 끊어진 인스턴스를 언로드 하려면, Resources.UnloadUnusedAssets를 해야함.</li>
+</ul>
+</li>
+</ul>
 <div class="table-wrapper"><table><thead><tr><th></th><th></th><th></th></tr></thead><tbody>
 <tr><td>CRC</td><td>CRC32</td><td>bytes</td></tr>
 <tr><td>Hash</td><td><a href="https://en.wikipedia.org/wiki/Jenkins_hash_function#SpookyHash">SpookyHashV2</a></td><td>asset files, type trees, buildtarget, buildoption, callbacks ...</td></tr>
@@ -410,7 +449,7 @@ AppendHashToAssetBundleName</p>
 <p>=======================================
 Editor Simulation
 Use assetbundle without actually building them
-GetAssetPathsFromAssetBundleAndAssetName</p>
+<a href="https://docs.unity3d.com/ScriptReference/AssetDatabase.GetAssetPathsFromAssetBundleAndAssetName.html">AssetDatabase.GetAssetPathsFromAssetBundleAndAssetName</a></p>
 <p>=======================================</p>
 <p>assetbundle hash</p>
 <ul>
@@ -461,27 +500,6 @@ http://blog.juiceboxmobile.com/2013/06/19/per-asset-versioning-with-unity-asset-
      - easy to detect if you want to upload to CDN
 </code></pre>
 <hr />
-<h1 id="assetbundlebuild"><a class="header" href="#assetbundlebuild">AssetBundleBuild</a></h1>
-<ul>
-<li>http://docs.unity3d.com/ScriptReference/AssetBundleBuild.html</li>
-<li>assetBundleName 은 lower_case만 올 수 있다.(under_score방식으로 내이밍을 지정하야할듯.)</li>
-</ul>
-<pre><code class="language-txt">    assetBundleName	AssetBundle name.
-    assetBundleVariant	AssetBundle variant.
-    assetNames	Asset names which belong to the given AssetBundle.
-</code></pre>
-<hr />
-<h1 id="assetbundlemanifest-1"><a class="header" href="#assetbundlemanifest-1">AssetBundleManifest</a></h1>
-<ul>
-<li>http://docs.unity3d.com/ScriptReference/AssetBundleManifest.html</li>
-</ul>
-<pre><code class="language-txt">    GetAllAssetBundles	Get all the AssetBundles in the manifest.
-    GetAllAssetBundlesWithVariant	Get all the AssetBundles with variant in the manifest.
-    GetAllDependencies	Get all the dependent AssetBundles for the given AssetBundle.
-    GetAssetBundleHash	Get the hash for the given AssetBundle.
-    GetDirectDependencies	Get the direct dependent AssetBundles for the given AssetBundle.
-</code></pre>
-<hr />
 <h1 id="에셋번들-빌드"><a class="header" href="#에셋번들-빌드">에셋번들 빌드</a></h1>
 <pre><code class="language-yaml">r_in
   group_00
@@ -528,7 +546,7 @@ Dependencies: []
 <li>ClassTypes</li>
 </ul>
 <hr />
-<h1 id="assetbundlemanifest-2"><a class="header" href="#assetbundlemanifest-2">AssetBundleManifest</a></h1>
+<h1 id="assetbundlemanifest-1"><a class="header" href="#assetbundlemanifest-1">AssetBundleManifest</a></h1>
 <ul>
 <li>include all the assetbundles</li>
 <li>include all the assetbundle dependencies</li>
@@ -623,10 +641,15 @@ Hashes:
 </ul>
 <h2 id="ref"><a class="header" href="#ref">Ref</a></h2>
 <ul>
+<li>learn
+<ul>
+<li><a href="http://unity3d.com/learn/tutorials/modules/intermediate/live-training-archive/unity5-asset-bundles">WORKING WITH ASSET BUNDLES IN UNITY 5</a></li>
+<li><a href="https://learn.unity.com/tutorial/assets-resources-and-assetbundles#5c7f8528edbc2a002053b5a6">Assets, Resources and AssetBundles</a></li>
+</ul>
+</li>
 <li><a href="http://docs.unity3d.com/Manual/BuildingAssetBundles5x.html">BuildingAssetBundles in 5.x</a></li>
 <li><a href="https://en.wikipedia.org/wiki/YAML">wiki - yaml</a></li>
 <li><a href="https://www.youtube.com/watch?v=gVUgF2ZHveo">Unite 2014 - New AssetBundle Build System in Unity 5</a></li>
-<li><a href="http://unity3d.com/learn/tutorials/modules/intermediate/live-training-archive/unity5-asset-bundles">WORKING WITH ASSET BUNDLES IN UNITY 5</a></li>
 <li><a href="https://www.youtube.com/watch?v=6D9AbQodeVg">Live Training April 29th, 2015: Working with Asset Bundles in Unity 5</a></li>
 <li><a href="http://blog.juiceboxmobile.com/2013/06/19/per-asset-versioning-with-unity-asset-bundles/">Per Asset Versioning with Unity Asset Bundles</a></li>
 <li><a href="https://qiita.com/k7a/items/d27640ac0276214fc850">AssetBundleを完全に理解する</a></li>
