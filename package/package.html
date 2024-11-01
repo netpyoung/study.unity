@@ -182,9 +182,30 @@
                     <main>
                         <h1 id="package"><a class="header" href="#package">Package</a></h1>
 <ul>
-<li><a href="https://youtu.be/22HIEQTyozQ?si=iDa45oQW6xCmRoKc">[unite copenhagen2019] Understanding the package management ecosystem - Unite Copenhagen</a></li>
-<li><a href="https://docs.unity3d.com/Manual/upm-ui-giturl.html">https://docs.unity3d.com/Manual/upm-ui-giturl.html</a></li>
+<li>
+<p><a href="https://youtu.be/22HIEQTyozQ?si=iDa45oQW6xCmRoKc">[unite copenhagen2019] Understanding the package management ecosystem - Unite Copenhagen</a></p>
+</li>
+<li>
+<p>Install a UPM package from a Git URL : <a href="https://docs.unity3d.com/Manual/upm-ui-giturl.html">https://docs.unity3d.com/Manual/upm-ui-giturl.html</a></p>
+</li>
+<li>
+<p>패키지 구조 : <a href="https://docs.unity3d.com/Manual/cus-tests.html">https://docs.unity3d.com/Manual/cus-tests.html</a></p>
+</li>
 </ul>
+<pre><code class="language-json">
+- https://docs.unity3d.com/Manual/upm-localpath.html
+
+{
+  "dependencies": {
+    "my_package_a": "file:../github/my_package_folder",
+</code></pre>
+<pre><code>- https://docs.unity3d.com/Manual/upm-config-https-git.html
+  - https://github.com/git-ecosystem/git-credential-manager
+  - https://git-scm.com/book/en/v2/Git-Tools-Credential-Storage
+
+git config --global credential.helper manager
+git ls-remote --heads https://&lt;url-to-repository&gt; HEAD
+</code></pre>
 
                     </main>
 
