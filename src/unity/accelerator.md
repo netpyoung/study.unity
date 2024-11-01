@@ -1,9 +1,12 @@
 # accelerator
 
-AssetPipeline2
+- AssetPipeline
+  - v2: Unity Accelerator지원. 2019.3 부터. 
+  - v1: 캐시 서버는 v1만 지원. (legacy)
 
 - <https://docs.unity3d.com/Manual/UnityAccelerator.html>
-- <https://hub.docker.com/r/unitytechnologies/accelerator>
+  - <https://hub.docker.com/r/unitytechnologies/accelerator>
+  - <https://unity.com/blog/engine-platform/new-asset-import-pipeline-for-speeding-up-asset-imports>
 
 |                        |                      |               |
 | ---------------------- | -------------------- | ------------- |
@@ -15,7 +18,7 @@ AssetPipeline2
 <!-- toc -->
 
 
-## 종료
+## 종료 방법
 
 - Windows
   - 설치파일로 설치하면 서비스로 등록이된다.
@@ -23,10 +26,10 @@ AssetPipeline2
   - Unity Accelerator
 
 - Mac OS X
-  - Run the launchctl command from the terminal to control the “com.unity.accelerator” service from the LaunchControl utility. For more information, visit https://www.launchd.info/.
+  - Run the launchctl command from the terminal to control the “com.unity.accelerator” service from the LaunchControl utility. For more information, visit <https://www.launchd.info/>.
 
 - Linux
-  - Use the service console utility to control the “unity-accelerator” service. For more information, visit http://manpages.ubuntu.com/manpages/bionic/man8/service.8.html.
+  - Use the service console utility to control the “unity-accelerator” service. For more information, visit <http://manpages.ubuntu.com/manpages/bionic/man8/service.8.html>.
 
 ## 주의
 

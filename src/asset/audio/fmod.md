@@ -15,6 +15,8 @@
 - 트러블 슈팅
   - 거리가 가까우면 2D사운드
 
+
+``` cs
 EventObj event = EventSystem.GetEvent("rifle");
 event.SetPosition(currentPosition);
 event.Play();
@@ -22,6 +24,7 @@ event.Play();
 EventObj event = EventSystem.GetEvent("footstep");
 event.SetPosition(groundType);
 event.Play();
+```
 
 |                   |                                                         |
 | ----------------- | ------------------------------------------------------- |

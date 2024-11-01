@@ -142,7 +142,7 @@ http://docs.unity3d.com/ScriptReference/AssetBundleManifest.html
 | ------------------------------- | -------------------------- | ------------------------------------------------------- |
 | assetBundle.LoadFromFile(Async) | 디스크 읽기(Mem: 헤더크기) | 디스크 읽기 + LZMA 해제 + LZ4압축(Mem: LZ4 bundle size) |
 
-- `AssetBundle.LoadFromFileAsync`은 LZMA일때 메모리를 사용한다.
+- `AssetBundle.LoadFromFile(Async)`은 LZMA일때 메모리를 사용한다.
   - `AssetBundle.RecompressAssetBundleAsync`를 이용하여 LZ4로 변환하여 저장하여 성능향상을 도모할 수 있다.
   - BuildCompression.LZ4Runtime 처럼 뒤에 Runtime이 붙는걸로 변환해야하며 아니면 ArgumentException 이 뜬다.
 
@@ -151,15 +151,51 @@ http://docs.unity3d.com/ScriptReference/AssetBundleManifest.html
 
 - 2017.1 부터 캐싱 api가 확장됨 https://docs.unity3d.com/ScriptReference/Caching.html
 
-If you provide a version parameter to the UWR API, Unity stores your AssetBundle data in the Disk Cache. If you do not provide a version parameter, Unity uses the Memory Cache. The version parameter can be either a version number or a hash.
+``` cs
+using(var uwr = UnityWebRequestAssetBundle.GetAssetBundle("www.bundle"))
+{
+    yield return uwr.SendWebRequest();
+    var bundle = DownloadHandlerAssetBundle.GetContent(uwr);
+}
+```
+
+- `public static Networking.UnityWebRequest GetAssetBundle(string uri, uint version, uint crc);`
+  - If you provide a version parameter to the UWR API, Unity stores your AssetBundle data in the Disk Cache.
+  - If you do not provide a version parameter, Unity uses the Memory Cache. The version parameter can be either a version number or a hash.
+  - The version parameter can be either a version number or a hash
 
 | Caching.compressionEnabled |                                                                                                                                                               |
 | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | true                       | Unity applies LZ4 compression when it writes AssetBundles to disk for all subsequent downloads. It does not compress existing uncompressed data in the cache. |
 | false                      | Unity applies no compression when it writes AssetBundles to disk.                                                                                             |
 
+| Cache  |                                                                                                |
+| ------ | ---------------------------------------------------------------------------------------------- |
+| Memory | Cache stores AssetBundles in UncompressedRuntime format in RAM.                                |
+| Disk   | Cache stores fetched AssetBundles on writable media in the compression format described later. |
+
+
+AssetBundle.RecompressAssetBundleAsync to rewrite an LZMA AssetBundle on disk.
+
+- 다운받은 에셋
+  - LZMA
+    - 압축해제하거나 LZ4로 캐시에 저장 - Caching.compressionEnabled 설정에 영향받음
+
+
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+## AssetBundle.Unload
+
+- [Using AssetBundles Natively](https://docs.unity3d.com/Manual/AssetBundles-Native.html)
+- AssetBundle 관리에 대해 이해해야 할 가장 중요한 것은 AssetBundle.Unload(bool) 또는 AssetBundle.UnloadAsync(bool)을 호출할 때 와 함수 호출에 true 또는 false를 전달해야 하는지 여부. 
+  - 인수는 이 AssetBundle에서 인스턴스화된 모든 Object도 언로드할지 나타냄
+  - false시 연결이 끊어진 인스턴스를 언로드 하려면, Resources.UnloadUnusedAssets를 해야함.
+
+
+
+
 
 
 |      |                                                                                |                                                                  |
@@ -186,7 +222,7 @@ AppendHashToAssetBundleName
 =======================================
 Editor Simulation
 Use assetbundle without actually building them
-GetAssetPathsFromAssetBundleAndAssetName
+[AssetDatabase.GetAssetPathsFromAssetBundleAndAssetName](https://docs.unity3d.com/ScriptReference/AssetDatabase.GetAssetPathsFromAssetBundleAndAssetName.html)
 
 
 =======================================
@@ -258,33 +294,6 @@ http://blog.juiceboxmobile.com/2013/06/19/per-asset-versioning-with-unity-asset-
     AppendHashToAssetBundleName
      - get different name when bundle changes
      - easy to detect if you want to upload to CDN
-```
-
-
-
-----
-# AssetBundleBuild
-* http://docs.unity3d.com/ScriptReference/AssetBundleBuild.html
-* assetBundleName 은 lower_case만 올 수 있다.(under_score방식으로 내이밍을 지정하야할듯.)
-
-```txt
-    assetBundleName	AssetBundle name.
-    assetBundleVariant	AssetBundle variant.
-    assetNames	Asset names which belong to the given AssetBundle.
-```
-
-
-
-----
-# AssetBundleManifest
-* http://docs.unity3d.com/ScriptReference/AssetBundleManifest.html
-
-```txt
-    GetAllAssetBundles	Get all the AssetBundles in the manifest.
-    GetAllAssetBundlesWithVariant	Get all the AssetBundles with variant in the manifest.
-    GetAllDependencies	Get all the dependent AssetBundles for the given AssetBundle.
-    GetAssetBundleHash	Get the hash for the given AssetBundle.
-    GetDirectDependencies	Get the direct dependent AssetBundles for the given AssetBundle.
 ```
 
 
@@ -445,10 +454,12 @@ b: - bundle
 
 ## Ref
 
+- learn
+  - [WORKING WITH ASSET BUNDLES IN UNITY 5](http://unity3d.com/learn/tutorials/modules/intermediate/live-training-archive/unity5-asset-bundles)
+  - [Assets, Resources and AssetBundles](https://learn.unity.com/tutorial/assets-resources-and-assetbundles#5c7f8528edbc2a002053b5a6)
 - [BuildingAssetBundles in 5.x](http://docs.unity3d.com/Manual/BuildingAssetBundles5x.html)
 - [wiki - yaml](https://en.wikipedia.org/wiki/YAML)
 - [Unite 2014 - New AssetBundle Build System in Unity 5](https://www.youtube.com/watch?v=gVUgF2ZHveo)
-- [WORKING WITH ASSET BUNDLES IN UNITY 5](http://unity3d.com/learn/tutorials/modules/intermediate/live-training-archive/unity5-asset-bundles)
 - [Live Training April 29th, 2015: Working with Asset Bundles in Unity 5](https://www.youtube.com/watch?v=6D9AbQodeVg)
 - [Per Asset Versioning with Unity Asset Bundles](http://blog.juiceboxmobile.com/2013/06/19/per-asset-versioning-with-unity-asset-bundles/)
 - [AssetBundleを完全に理解する](https://qiita.com/k7a/items/d27640ac0276214fc850)
