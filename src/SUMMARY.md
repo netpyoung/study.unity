@@ -29,6 +29,7 @@
 # Etc
 
 - [compile-warning](./etc/compile-warning.md)
+- [csc.rsp](./etc/csc.md)
 
 # 디버깅
 
