@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>csc.rsp - 넷평의 Unity 노트</title>
+        <title>UniTask - 넷평의 Unity 노트</title>
 
 
         <!-- Custom HTML head -->
@@ -130,7 +130,7 @@
                         <a href="https://github.com/netpyoung/study.unity" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        <a href="https://github.com/netpyoung/study.unity/edit/main/src/etc/csc.md" title="Suggest an edit" aria-label="Suggest an edit">
+                        <a href="https://github.com/netpyoung/study.unity/edit/main/src/thirdparty/unitask.md" title="Suggest an edit" aria-label="Suggest an edit">
                             <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
 
@@ -159,40 +159,59 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="cscrsp"><a class="header" href="#cscrsp">csc.rsp</a></h1>
+                        <h2 id="unity-coroutine"><a class="header" href="#unity-coroutine">Unity Coroutine</a></h2>
 <ul>
-<li>
-<p>ref: <a href="./compile-warning.html">compile-warning</a></p>
-</li>
-<li>
-<p><a href="https://github.com/mob-sakai/CSharpCompilerSettingsForUnity">https://github.com/mob-sakai/CSharpCompilerSettingsForUnity</a></p>
-</li>
-<li>
-<p><a href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/miscellaneous">https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/miscellaneous</a></p>
-<ul>
-<li><a href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/errors-warnings">https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/errors-warnings</a></li>
+<li><a href="https://github.com/Unity-Technologies/UnityCsReference/blob/master/Runtime/Export/Scripting/Coroutine.bindings.cs">https://github.com/Unity-Technologies/UnityCsReference/blob/master/Runtime/Export/Scripting/Coroutine.bindings.cs</a></li>
 </ul>
-</li>
-<li>
-<p><a href="https://github.com/dotnet/roslyn/blob/main/src/Compilers/CSharp/csc/csc.rsp">https://github.com/dotnet/roslyn/blob/main/src/Compilers/CSharp/csc/csc.rsp</a></p>
-</li>
-</ul>
-<pre><code class="language-txt"># file: csc.rsp
+<pre><code class="language-cs">public Coroutine StartCoroutine(IEnumerator routine);
+public void StopCoroutine(Coroutine routine);
 
--nullable:enable
--warn:4
--warnaserror+
+IEnumerator
+
+public abstract class CustomYieldInstruction : IEnumerator
+public sealed class Coroutine : YieldInstruction
 </code></pre>
+<pre><code class="language-plantuml">Caller -&gt; Coroutine: Call
+Caller &lt;- Coroutine: Yield
+Caller -&gt; Coroutine: Resume
+Caller &lt;- Coroutine: Yield
+
+</code></pre>
+<h2 id="unitask"><a class="header" href="#unitask">UniTask</a></h2>
+<ul>
+<li>https://github.com/Cysharp/UniTask</li>
+</ul>
+<h3 id="unitask-특징"><a class="header" href="#unitask-특징">UniTask 특징</a></h3>
+<ul>
+<li>Struct based</li>
+<li>custom AsyncMethodBuilder</li>
+</ul>
+<pre><code class="language-cs">// https://github.com/Cysharp/UniTask/blob/master/src/UniTask/Assets/Plugins/UniTask/Runtime/PlayerLoopHelper.cs
+[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+static void Init()
+{
+    // capture default(unity) sync-context.
+    unitySynchronizationContext = SynchronizationContext.Current;
+    mainThreadId = Thread.CurrentThread.ManagedThreadId;
+    ...
+}
+</code></pre>
+<h3 id="unitask-장단점"><a class="header" href="#unitask-장단점">UniTask 장/단점</a></h3>
+<ul>
+<li>테스트코드 유무</li>
+</ul>
+<p>UniTaskVoid
+Forget()</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../etc/compile-warning.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../unity/unitywebrequest.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../etc/WindowsSetting.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../package/package.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -202,11 +221,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../etc/compile-warning.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../unity/unitywebrequest.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../etc/WindowsSetting.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../package/package.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

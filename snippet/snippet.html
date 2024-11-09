@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>csc.rsp - 넷평의 Unity 노트</title>
+        <title>snippet - 넷평의 Unity 노트</title>
 
 
         <!-- Custom HTML head -->
@@ -130,7 +130,7 @@
                         <a href="https://github.com/netpyoung/study.unity" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        <a href="https://github.com/netpyoung/study.unity/edit/main/src/etc/csc.md" title="Suggest an edit" aria-label="Suggest an edit">
+                        <a href="https://github.com/netpyoung/study.unity/edit/main/src/snippet/snippet.md" title="Suggest an edit" aria-label="Suggest an edit">
                             <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
 
@@ -159,40 +159,59 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="cscrsp"><a class="header" href="#cscrsp">csc.rsp</a></h1>
+                        <h1 id="snippet"><a class="header" href="#snippet">Snippet</a></h1>
+<pre><code class="language-cs">using UnityEngine;
+Color setColor;
+ColorUtility.TryParseHtmlString("#7F7E83FF", out setColor);
+</code></pre>
 <ul>
-<li>
-<p>ref: <a href="./compile-warning.html">compile-warning</a></p>
-</li>
-<li>
-<p><a href="https://github.com/mob-sakai/CSharpCompilerSettingsForUnity">https://github.com/mob-sakai/CSharpCompilerSettingsForUnity</a></p>
-</li>
-<li>
-<p><a href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/miscellaneous">https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/miscellaneous</a></p>
+<li>proguard.txt
 <ul>
-<li><a href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/errors-warnings">https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/errors-warnings</a></li>
+<li>ref: <a href="https://github.com/playgameservices/play-games-plugin-for-unity/blob/master/scripts/proguard.txt">https://github.com/playgameservices/play-games-plugin-for-unity/blob/master/scripts/proguard.txt</a></li>
 </ul>
-</li>
-<li>
-<p><a href="https://github.com/dotnet/roslyn/blob/main/src/Compilers/CSharp/csc/csc.rsp">https://github.com/dotnet/roslyn/blob/main/src/Compilers/CSharp/csc/csc.rsp</a></p>
+<ol>
+<li>ProjectSetting/Player/Publishing Settings으로 접근</li>
+<li>Minify에  Release와 Dubug를 체크</li>
+<li>Build에 'Custom Proguard File' 체크</li>
+<li>Assets/Plugins/Android 폴더에 접근</li>
+<li>proguard-user.txt 파일을 열어서 아래의 내용을 추가</li>
+</ol>
 </li>
 </ul>
-<pre><code class="language-txt"># file: csc.rsp
-
--nullable:enable
--warn:4
--warnaserror+
+<pre><code class="language-txt">-keep class com.google.android.gms.games.PlayGames { *; }
+-keep class com.google.android.gms.games.leaderboard.** { *; }
+-keep class com.google.android.gms.games.snapshot.** { *; }
+-keep class com.google.android.gms.games.achievement.** { *; }
+-keep class com.google.android.gms.games.event.** { *; }
+-keep class com.google.android.gms.games.stats.** { *; }
+-keep class com.google.android.gms.games.video.** { *; }
+-keep class com.google.android.gms.games.* { *; }
+-keep class com.google.android.gms.common.api.ResultCallback { *; }
+-keep class com.google.android.gms.signin.** { *; }
+-keep class com.google.android.gms.dynamic.** { *; }
+-keep class com.google.android.gms.dynamite.** { *; }
+-keep class com.google.android.gms.tasks.** { *; }
+-keep class com.google.android.gms.security.** { *; }
+-keep class com.google.android.gms.base.** { *; }
+-keep class com.google.android.gms.actions.** { *; }
+-keep class com.google.games.bridge.** { *; }
+-keep class com.google.android.gms.common.ConnectionResult { *; }
+-keep class com.google.android.gms.common.GooglePlayServicesUtil { *; }
+-keep class com.google.android.gms.common.api.** { *; }
+-keep class com.google.android.gms.common.data.DataBufferUtils { *; }
+-keep class com.google.android.gms.games.quest.** { *; }
+-keep class com.google.android.gms.nearby.** { *; }
 </code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../etc/compile-warning.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../dots/dots-ecs.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../etc/WindowsSetting.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../asset/asset-paid.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -202,11 +221,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../etc/compile-warning.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../dots/dots-ecs.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../etc/WindowsSetting.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../asset/asset-paid.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

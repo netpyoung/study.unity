@@ -1076,7 +1076,197 @@ Application.streamingAssetsPath : 값 없음.
 <tr><td>Android External</td><td>/mnt/sdcard/Android/data/%BundleIdentifier%/cache</td></tr>
 <tr><td>iOS</td><td>/var/mobile/Applications/프로그램ID/Library/Caches</td></tr>
 </tbody></table>
-</div><div style="break-before: page; page-break-before: always;"></div><h1 id="package"><a class="header" href="#package">Package</a></h1>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="editor-window"><a class="header" href="#editor-window">Editor Window</a></h1>
+<ul>
+<li>
+<p><a href="http://www.jacobpennock.com/Blog/unity-pro-tip-use-custom-made-assets-as-configuration-files/">http://www.jacobpennock.com/Blog/unity-pro-tip-use-custom-made-assets-as-configuration-files/</a></p>
+</li>
+<li>
+<p><a href="https://github.com/MattRix/UnityDecompiled/blob/master/UnityEditor/UnityEditor/AvatarPreview.cs">https://github.com/MattRix/UnityDecompiled/blob/master/UnityEditor/UnityEditor/AvatarPreview.cs</a></p>
+</li>
+<li>
+<p><a href="http://unity3de.blogspot.kr/2014/11/custom-time-line-multi-selection-slider.html">http://unity3de.blogspot.kr/2014/11/custom-time-line-multi-selection-slider.html</a></p>
+</li>
+<li>
+<p><a href="http://ndcreplay.nexon.com/NDC2019/sessions/NDC2019_0010.html">NDC2019 유니티의 “에디터 윈도우” 톺아보기 - 〈AnyPortrait〉 개발 경험과 유니티 에디터 에셋 구현 이슈</a></p>
+</li>
+<li>
+<p>PreviewRenderUtility</p>
+<ul>
+<li><a href="https://labs.gree.jp/blog/2015/09/14287/">https://labs.gree.jp/blog/2015/09/14287/</a></li>
+<li><a href="https://github.com/Unity-Technologies/UnityCsReference/blob/master/Editor/Mono/Inspector/PreviewRenderUtility.cs">https://github.com/Unity-Technologies/UnityCsReference/blob/master/Editor/Mono/Inspector/PreviewRenderUtility.cs</a></li>
+<li><a href="https://www.youtube.com/watch?v=TPGFnk8guL8">Custom Unity Inspector Mesh Renderer</a></li>
+</ul>
+</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><pre><code class="language-cs">using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using UnityEditor;
+using UnityEngine;
+
+// Create a new type of Settings Asset.
+class MyCustomSettings : ScriptableObject
+{
+    public const string k_MyCustomSettingsPath = "Assets/Editor/MyCustomSettings.asset";
+
+    [SerializeField]
+    private int m_Number;
+
+    [SerializeField]
+    private string m_SomeString;
+
+    internal static MyCustomSettings GetOrCreateSettings()
+    {
+        var settings = AssetDatabase.LoadAssetAtPath&lt;MyCustomSettings&gt;(k_MyCustomSettingsPath);
+        if (settings == null)
+        {
+            settings = ScriptableObject.CreateInstance&lt;MyCustomSettings&gt;();
+            settings.m_Number = 42;
+            settings.m_SomeString = "The answer to the universe";
+            AssetDatabase.CreateAsset(settings, k_MyCustomSettingsPath);
+            AssetDatabase.SaveAssets();
+        }
+        return settings;
+    }
+
+    internal static SerializedObject GetSerializedSettings()
+    {
+        return new SerializedObject(GetOrCreateSettings());
+    }
+}
+
+// Register a SettingsProvider using IMGUI for the drawing framework:
+static class MyCustomSettingsIMGUIRegister
+{
+    [SettingsProvider]
+    public static SettingsProvider CreateMyCustomSettingsProvider()
+    {
+        // First parameter is the path in the Settings window.
+        // Second parameter is the scope of this setting: it only appears in the Project Settings window.
+        var provider = new SettingsProvider("Project/MyCustomIMGUISettings", SettingsScope.Project)
+        {
+            // By default the last token of the path is used as display name if no label is provided.
+            label = "Custom IMGUI",
+            // Create the SettingsProvider and initialize its drawing (IMGUI) function in place:
+            guiHandler = (searchContext) =&gt;
+            {
+                var settings = MyCustomSettings.GetSerializedSettings();
+                EditorGUILayout.PropertyField(settings.FindProperty("m_Number"), new GUIContent("My Number"));
+                EditorGUILayout.PropertyField(settings.FindProperty("m_SomeString"), new GUIContent("My String"));
+                settings.ApplyModifiedPropertiesWithoutUndo();
+            },
+
+            // Populate the search keywords to enable smart search filtering and label highlighting:
+            keywords = new HashSet&lt;string&gt;(new[] { "Number", "Some String" })
+        };
+
+        return provider;
+    }
+}
+</code></pre>
+<h2 id="ref-2"><a class="header" href="#ref-2">Ref</a></h2>
+<ul>
+<li><a href="https://docs.unity3d.com/ScriptReference/SettingsProvider.html">https://docs.unity3d.com/ScriptReference/SettingsProvider.html</a></li>
+<li><a href="https://docs.unity3d.com/Packages/com.unity.settings-manager@2.0/manual/index.html">https://docs.unity3d.com/Packages/com.unity.settings-manager@2.0/manual/index.html</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><ul>
+<li>
+<p>Unity New GUI Tutorial - kinil Muzykov</p>
+<ul>
+<li>http://www.raywenderlich.com/78675/unity-new-gui-part-1</li>
+<li>http://www.raywenderlich.com/79031/unity-new-gui-tutorial-part-2</li>
+<li>http://www.raywenderlich.com/79046/unity-new-gui-tutorial-part-3</li>
+</ul>
+</li>
+<li>
+<p>[Unity][uGUI] uGUIにパ?ティクルや他のオブジェクトを重ねて描?する: http://westhillapps.blog.jp/archives/43632310.html</p>
+</li>
+<li>
+<p>ugui bmfont: http://westhillapps.blog.jp/archives/43790545.html</p>
+</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="unitywebrequest"><a class="header" href="#unitywebrequest">UnityWebRequest</a></h1>
+<p>UnityWebRequest.Get
+return new UnityWebRequest(uri, "GET", new DownloadHandlerBuffer(), null);</p>
+<ul>
+<li>Abort()
+<ul>
+<li>호출하면 요청이 즉시 취소되고, 요청의 상태가 isDone = true로 설정되면서 콜백도 정상적으로 종료.</li>
+</ul>
+</li>
+</ul>
+<h2 id="downloadprogress"><a class="header" href="#downloadprogress">downloadProgress</a></h2>
+<ul>
+<li><a href="https://docs.unity3d.com/ScriptReference/Networking.UnityWebRequest-downloadProgress.html">https://docs.unity3d.com/ScriptReference/Networking.UnityWebRequest-downloadProgress.html</a>
+<ul>
+<li>Send전에는 : -1</li>
+<li>성공/실패 : 1</li>
+<li>통신중
+<ul>
+<li>(downloadHandler == null) : 0.5 고정</li>
+<li>downloadHandler.GetProgress()</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>UnityWebRequest.Result</th><th></th></tr></thead><tbody>
+<tr><td>Success</td><td>요청이 성공했습니다.</td></tr>
+<tr><td>InProgress</td><td>요청이 아직 완료되지 않았습니다.</td></tr>
+<tr><td>ConnectionError</td><td>서버와의 통신에 실패했습니다. (연결할 수 없거나 / 보안 채널을 설정할 수 없었습니다.)</td></tr>
+<tr><td>ProtocolError</td><td>서버와의 통신은 성공했지만, 연결 프로토콜에 정의된 오류를 받았습니다.</td></tr>
+<tr><td>DataProcessingError</td><td>서버와의 통신은 성공했지만, 받은 데이터를 처리하는 과정에서 오류가 발생했습니다.</td></tr>
+</tbody></table>
+</div>
+<h2 id="ref-3"><a class="header" href="#ref-3">Ref</a></h2>
+<ul>
+<li><a href="https://qiita.com/su10/items/538e39a2a2cd84dc032b">【Unity】UnityWebRequestの詳細なエラー内容で処理を分岐する方法</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="unity-coroutine"><a class="header" href="#unity-coroutine">Unity Coroutine</a></h2>
+<ul>
+<li><a href="https://github.com/Unity-Technologies/UnityCsReference/blob/master/Runtime/Export/Scripting/Coroutine.bindings.cs">https://github.com/Unity-Technologies/UnityCsReference/blob/master/Runtime/Export/Scripting/Coroutine.bindings.cs</a></li>
+</ul>
+<pre><code class="language-cs">public Coroutine StartCoroutine(IEnumerator routine);
+public void StopCoroutine(Coroutine routine);
+
+IEnumerator
+
+public abstract class CustomYieldInstruction : IEnumerator
+public sealed class Coroutine : YieldInstruction
+</code></pre>
+<pre><code class="language-plantuml">Caller -&gt; Coroutine: Call
+Caller &lt;- Coroutine: Yield
+Caller -&gt; Coroutine: Resume
+Caller &lt;- Coroutine: Yield
+
+</code></pre>
+<h2 id="unitask"><a class="header" href="#unitask">UniTask</a></h2>
+<ul>
+<li>https://github.com/Cysharp/UniTask</li>
+</ul>
+<h3 id="unitask-특징"><a class="header" href="#unitask-특징">UniTask 특징</a></h3>
+<ul>
+<li>Struct based</li>
+<li>custom AsyncMethodBuilder</li>
+</ul>
+<pre><code class="language-cs">// https://github.com/Cysharp/UniTask/blob/master/src/UniTask/Assets/Plugins/UniTask/Runtime/PlayerLoopHelper.cs
+[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+static void Init()
+{
+    // capture default(unity) sync-context.
+    unitySynchronizationContext = SynchronizationContext.Current;
+    mainThreadId = Thread.CurrentThread.ManagedThreadId;
+    ...
+}
+</code></pre>
+<h3 id="unitask-장단점"><a class="header" href="#unitask-장단점">UniTask 장/단점</a></h3>
+<ul>
+<li>테스트코드 유무</li>
+</ul>
+<p>UniTaskVoid
+Forget()</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="package"><a class="header" href="#package">Package</a></h1>
 <ul>
 <li>
 <p><a href="https://youtu.be/22HIEQTyozQ?si=iDa45oQW6xCmRoKc">[unite copenhagen2019] Understanding the package management ecosystem - Unite Copenhagen</a></p>
@@ -1212,7 +1402,7 @@ git ls-remote --heads https://&lt;url-to-repository&gt; HEAD
 </ul>
 </li>
 </ul>
-<h2 id="ref-2"><a class="header" href="#ref-2">Ref</a></h2>
+<h2 id="ref-4"><a class="header" href="#ref-4">Ref</a></h2>
 <ul>
 <li><a href="https://github.com/orgs/needle-mirror/repositories">https://github.com/orgs/needle-mirror/repositories</a></li>
 <li><a href="https://github.com/orgs/Unity-Technologies/repositories">https://github.com/orgs/Unity-Technologies/repositories</a></li>
@@ -1676,6 +1866,283 @@ https://www.amazon.com/dp/0133046850/ref=cm_sw_r_cp_awdb_l5R.ybCQE0NQR</p>
 </ul>
 </li>
 </ul>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="dots"><a class="header" href="#dots">Dots</a></h2>
+<ul>
+<li>
+<p><code>D</code>ata <code>O</code>riented <code>T</code>echnology <code>S</code>tack</p>
+</li>
+<li>
+<p>https://unity.com/resources/introduction-to-dots-ebook</p>
+</li>
+<li>
+<p>Loadmap https://unity.com/roadmap/unity-platform/dots</p>
+<ul>
+<li>https://docs.unity3d.com/Packages/com.unity.entities@1.3/manual/index.html</li>
+<li>https://docs.unity3d.com/Packages/com.unity.entities.graphics@1.4/manual/index.html</li>
+<li>https://docs.unity3d.com/Packages/com.unity.physics@1.3/manual/index.html</li>
+<li>https://docs.unity3d.com/Packages/com.unity.charactercontroller@1.2/manual/index.html</li>
+</ul>
+</li>
+</ul>
+<p>https://learn.unity.com/project/basics-dots-jobs-entities
+https://learn.unity.com/course/dots-best-practices
+https://github.com/Unity-Technologies/EntityComponentSystemSamples</p>
+<p>Entities.ForEach() relies on a large amount of automatic code generation which significantly slows down iteration speeds on a project. This automatic code-gen also introduces a number of unintuitive edge-cases in which unexpected behavior might occur. Idiomatic foreach is a cleaner, more intuitive interface for iterating over components on the main thread, and IJobEntity / IJobChunk are more explicit ways to express your desired behavior when multithreading is required.</p>
+<h2 id="burst"><a class="header" href="#burst">Burst</a></h2>
+<ul>
+<li>Burst uses a high performance subset of C# called High Performance C# (HPC#).
+<ul>
+<li>https://docs.unity3d.com/Packages/com.unity.burst@1.8/manual/csharp-hpc-overview.html</li>
+<li>https://docs.unity3d.com/Packages/com.unity.burst@1.8/manual/docs/Presentations.html</li>
+</ul>
+</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th></th><th></th></tr></thead><tbody>
+<tr><td>Unity.Entities</td><td></td></tr>
+<tr><td>Unity.Collections</td><td></td></tr>
+<tr><td>Unity.Entities.Hybrid</td><td><code>Baker</code></td></tr>
+<tr><td>Unity.Burst</td><td><code>[BurstCompile] </code></td></tr>
+<tr><td>Unity.Transforms</td><td><code>LocalTransform </code></td></tr>
+<tr><td>Unity.Mathematics</td><td><code>float3</code></td></tr>
+<tr><td>Unity.Physics</td><td><code>PhysicsVelocity</code></td></tr>
+</tbody></table>
+</div>
+<p>Edit &gt; Project Settings &gt; Editor menu, and enable the Enter Play Mode Options setting, but leave the Reload Domain and Reload Scene boxes disabled.</p>
+<h2 id="authoring-작성---제작"><a class="header" href="#authoring-작성---제작">Authoring "작성" - "제작"</a></h2>
+<ul>
+<li>Baker는 에디터에서만 실행되고 런타임 시에는 생성된 엔티티 데이터만 사용됩니다.</li>
+<li>Authoring이란, MonoBehaviour와 GameObject 기반의 데이터를 ECS의 엔티티 데이터로 변환하는 과정</li>
+</ul>
+<p><code>MonoBehaviour =&gt; Baker =Authoring=&gt; entity</code></p>
+<pre><code class="language-cs">public class MyAuthoring : MonoBehaviour
+{
+    public int Value;
+}
+
+public struct MyComponent : IComponentData
+{
+    public int Value;
+    public float3 Position;
+}
+
+public class MyBaker : Baker&lt;MyAuthoring&gt;
+{
+    public override void Bake(MyAuthoring authoring)
+    {
+      Entity entity = GetEntity(TransformUsageFlags.Dynamic);  // 런타임에 필요한 변환 데이터만 포함하도록 최적화합니다
+      AddComponent(entity, new MyAuthoring
+</code></pre>
+<p>[Flags]
+public enum TransformUsageFlags
+{
+None = 0,
+Renderable = 1,
+Dynamic = 2,
+WorldSpace = 4,
+NonUniformScale = 8,
+ManualOverride = 0x10
+}</p>
+<div class="table-wrapper"><table><thead><tr><th></th><th></th></tr></thead><tbody>
+<tr><td>Dynamic</td><td>런타임에서 움직이기 위해 LocalTransform과 LocalToWorld를 필요로 하는 엔티티.</td></tr>
+<tr><td>ManualOverride</td><td>변환 과정을 수동으로 제어하고 싶을 때 사용.</td></tr>
+<tr><td>NonUniformScale</td><td>비균일 스케일(축마다 다른 스케일)이 필요한 엔티티.</td></tr>
+<tr><td>None</td><td>해당 엔티티에 Transform 컴포넌트가 필요 없을 때 사용.</td></tr>
+<tr><td>Renderable</td><td>엔티티가 렌더링되도록 LocalToWorld만 필요할 때 사용. 이동 관련 컴포넌트는 포함되지 않음.</td></tr>
+<tr><td>WorldSpace</td><td>엔티티가 월드 좌표계에서 동작해야 할 때 사용. Dynamic 부모 관계에 영향을 받지 않음.</td></tr>
+</tbody></table>
+</div>
+<h2 id="system"><a class="header" href="#system">System</a></h2>
+<p>만들어두면 따로 등록하거나 할 필요없이 동작함.</p>
+<p><code>[ReadOnly]</code> https://docs.unity3d.com/ScriptReference/Unity.Collections.ReadOnlyAttribute.html</p>
+<div class="table-wrapper"><table><thead><tr><th></th><th></th></tr></thead><tbody>
+<tr><td>RefRO</td><td>RefRW</td></tr>
+<tr><td>EnableableRefRO</td><td>EnableableRefRW</td></tr>
+</tbody></table>
+</div>
+<p>/// RefRW Read/Write stores a reference (with write access) to native memory
+//  RefRO ReadOnly</p>
+<pre><code class="language-cs">
+// [BurstCompile]을 트리거삼아 로슬린 컴파일 때문에 partial struct
+public partial struct UnitMoverSystem : ISystem
+{
+    [BurstCompile]
+    public void OnUpdate(ref SystemState state)
+    {
+        foreach (RefRW&lt;LocalTransform&gt; localTransform in SystemAPI.Query&lt;RefRW&lt;LocalTransform&gt;&gt;())
+        {
+            localTransform.ValueRW.Position = localTransform.ValueRO.Position + new float3(1, 0, 0) * SystemAPI.Time.DeltaTime;
+        }
+    }
+}
+</code></pre>
+<pre><code class="language-cs">// job에는 Execute 메서드가 필수.
+
+[BurstCompile]
+public partial struct UnitMover_Job : IJobEntity
+{
+    public void Execute(in UnitMover_Comp comp, ref LocalTransform localTransform, ref PhysicsVelocity physicsVelocity)
+}
+
+
+public partial struct UnitMoverSystem : ISystem
+{
+    [BurstCompile]
+    public void OnUpdate(ref SystemState state)
+    {
+        Job job = new Job();
+        job.ScheduleParallel() // or job.Run();
+</code></pre>
+<h2 id=""><a class="header" href="#"></a></h2>
+<pre><code class="language-cs">void Update()
+{
+    if (Input.GetMouseButtonDown(1))
+    {
+        Vector3 mouseWorldPosition = GoMouseWorld.Instance.GetPosition();
+
+        World world = World.DefaultGameObjectInjectionWorld;
+        EntityManager manager = world.EntityManager;
+        EntityQuery query = new EntityQueryBuilder(Allocator.Temp).WithAll&lt;UnitMover_Comp&gt;().Build(manager);
+        NativeArray&lt;Entity&gt; entityArr = query.ToEntityArray(Allocator.Temp);
+        NativeArray&lt;UnitMover_Comp&gt; arr = query.ToComponentDataArray&lt;UnitMover_Comp&gt;(Allocator.Temp);
+        for (int i = 0; i &lt; arr.Length; ++i)
+        {
+            UnitMover_Comp comp = arr[i];
+            Entity e = entityArr[i];
+            comp.TargetPosition = mouseWorldPosition;
+            manager.SetComponentData(e, comp);
+        }
+    }
+}
+</code></pre>
+<h2 id="-1"><a class="header" href="#-1"></a></h2>
+<p>테그 체크박스</p>
+<pre><code class="language-cs">public struct Selected_Comp : IComponentData, IEnableableComponent
+public override void Bake(Selected_Authoring authoring)
+{
+    Entity entity = GetEntity(TransformUsageFlags.Dynamic);
+    SetComponentEnabled&lt;Selected_Comp&gt;(entity, false);
+
+
+SystemAPI.Query&lt;&gt;().WithDisabled&lt;Selected_Comp&gt;()
+SystemAPI.Query&lt;&gt;().WithPresent&lt;Selected_Comp&gt;()
+</code></pre>
+<h2 id="physicsworldsingleton"><a class="header" href="#physicsworldsingleton">PhysicsWorldSingleton</a></h2>
+<pre><code class="language-cs">EntityQuery query = manager.CreateEntityQuery(typeof(PhysicsWorldSingleton));
+PhysicsWorldSingleton physics = query.GetSingleton&lt;PhysicsWorldSingleton&gt;();
+CollisionWorld collision = physics.CollisionWorld;
+
+UnityEngine.Ray mouseCameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+int unitLayer = 6;
+RaycastInput input = new RaycastInput
+{
+    Start = mouseCameraRay.GetPoint(0),
+    End = mouseCameraRay.GetPoint(9999),
+    Filter = new CollisionFilter
+    {
+        BelongsTo = ~0u,
+        CollidesWith = 1u &lt;&lt; unitLayer,
+        GroupIndex = 0,
+    }
+};
+if (collision.CastRay(input, out Unity.Physics.RaycastHit hit))
+{
+    if (manager.HasComponent&lt;UnitMover_Comp&gt;(hit.Entity))
+    {
+        manager.SetComponentEnabled&lt;Selected_Comp&gt;(hit.Entity, true);
+    }
+}
+</code></pre>
+<p>SetComponentEnabled로 컴포넌트를 disable 시 쿼리에서 벗어나게됨</p>
+<pre><code>            query.CopyFromComponentDataArray(arr);
+</code></pre>
+<h2 id="group"><a class="header" href="#group">Group</a></h2>
+<pre><code class="language-cs">[UpdateInGroup(typeof(SimulationSystemGroup), OrderFirst = true)] 
+[UpdateBefore(typeof(BeginSimulationEntityCommandBufferSystem))] 
+public partial class PreSimulationSystemGroup : ComponentSystemGroup { }
+</code></pre>
+<p>UNITY_DISABLE_MANAGED_COMPONENTS
+플레이어 설정 에서 스크립팅 정의 에 UNITY_DISABLE_MANAGED_COMPONENTS 를 추가하여 누군가가 실수로 IComponentData 를 클래스로 선언하는 것을 방지합니다 .</p>
+<h2 id="-2"><a class="header" href="#-2"></a></h2>
+<p>LinkedEntityGroupAuthoring
+entity == Entity.Null검사는 파괴된 엔터티에 대해 작동하지 않습니다</p>
+<h2 id="-3"><a class="header" href="#-3"></a></h2>
+<div class="table-wrapper"><table><thead><tr><th></th></tr></thead><tbody>
+<tr><td>CreateEntity / DestroyEntity</td></tr>
+<tr><td>Instantiate</td></tr>
+<tr><td>AddComponent / RemoveComponent</td></tr>
+<tr><td>GetComponent / SetComponent</td></tr>
+</tbody></table>
+</div><div class="table-wrapper"><table><thead><tr><th>Component</th><th>Description</th></tr></thead><tbody>
+<tr><td>Unmanaged components</td><td>The most common component type, but can only store fields of certain types.</td></tr>
+<tr><td>Managed components</td><td>A managed component type that can store any field type.</td></tr>
+<tr><td>Shared components</td><td>Components that group entities in chunks based on their values.</td></tr>
+<tr><td>Cleanup components</td><td>When you destroy an entity that contains a cleanup component, Unity removes all non-cleanup components. This is useful to tag entities that require cleanup when destroyed.</td></tr>
+<tr><td>Tag components</td><td>An unmanaged component that stores no data and takes up no space. You can use tag components in entity queries to filter entities.</td></tr>
+<tr><td>Buffer components</td><td>A component that acts as a resizable array.</td></tr>
+<tr><td>Chunk components</td><td>A component that stores a value associated with an entire chunk, instead of a single entity.</td></tr>
+<tr><td>Enableable components</td><td>A component that can be enabled or disabled on an entity at runtime, without requiring an expensive structural change.</td></tr>
+<tr><td>Singleton components</td><td>A component that only has one instance in a given world.</td></tr>
+</tbody></table>
+</div>
+<p>Dragon Crashers - UI Toolkit Sample project https://assetstore.unity.com/packages/essentials/tutorial-projects/dragon-crashers-ui-toolkit-sample-project-231178
+QuizU - A UI toolkit sample https://assetstore.unity.com/packages/essentials/tutorial-projects/quizu-a-ui-toolkit-sample-268492?aid=1011l5f3d</p>
+<p>https://docs.unity3d.com/Packages/com.unity.entities@1.3/manual/editor-authoring-runtime.html?q=authoring</p>
+<p>Authoring mode : 버전 제어되는 데이터(예: 자산, 장면 게임 객체)를 포함합니다. 편집기에서 흰색 또는 회색 원으로 표시됩니다.
+Runtime mode : 런타임에서 사용하고 수정하는 데이터를 포함합니다. 예를 들어, Play 모드를 종료할 때 Unity가 파괴하는 데이터 또는 상태입니다. 편집기에서 주황색 또는 빨간색 원으로 표시됩니다.
+Mixed mode: 런타임과 실시간을 모두 볼 수 있는 뷰를 나타냅니다.저술데이터이지만저술데이터가 우선합니다. 편집기에서 흰색과 주황색 또는 회색과 빨간색 원으로 표시됩니다.</p>
+<h2 id="quicksheet"><a class="header" href="#quicksheet">quicksheet</a></h2>
+<p>SystemAPI.Time.DeltaTime
+SystemAPI.Query&lt;&gt;</p>
+<p>Entity e = GetEntity(TransformUsageFlags.Dynamic);
+AddComponent(e, new Comp_A {});
+float3 spawnPos = localTransform.ValueRO.TransformPoint(shootAttack.ValueRO.BulletSpawnLocalPosition);</p>
+<p>DisableRendering
+A tag component that disables the rendering of an entity.</p>
+<p>TransformUsageFlags.NonUniformScale - PostTransformMatrix
+localTransform.ValueRW.Rotation = parentLocalTransform.InverseTransformRotation(quaternion.LookRotation(cameraForward, math.up()));</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="snippet"><a class="header" href="#snippet">Snippet</a></h1>
+<pre><code class="language-cs">using UnityEngine;
+Color setColor;
+ColorUtility.TryParseHtmlString("#7F7E83FF", out setColor);
+</code></pre>
+<ul>
+<li>proguard.txt
+<ul>
+<li>ref: <a href="https://github.com/playgameservices/play-games-plugin-for-unity/blob/master/scripts/proguard.txt">https://github.com/playgameservices/play-games-plugin-for-unity/blob/master/scripts/proguard.txt</a></li>
+</ul>
+<ol>
+<li>ProjectSetting/Player/Publishing Settings으로 접근</li>
+<li>Minify에  Release와 Dubug를 체크</li>
+<li>Build에 'Custom Proguard File' 체크</li>
+<li>Assets/Plugins/Android 폴더에 접근</li>
+<li>proguard-user.txt 파일을 열어서 아래의 내용을 추가</li>
+</ol>
+</li>
+</ul>
+<pre><code class="language-txt">-keep class com.google.android.gms.games.PlayGames { *; }
+-keep class com.google.android.gms.games.leaderboard.** { *; }
+-keep class com.google.android.gms.games.snapshot.** { *; }
+-keep class com.google.android.gms.games.achievement.** { *; }
+-keep class com.google.android.gms.games.event.** { *; }
+-keep class com.google.android.gms.games.stats.** { *; }
+-keep class com.google.android.gms.games.video.** { *; }
+-keep class com.google.android.gms.games.* { *; }
+-keep class com.google.android.gms.common.api.ResultCallback { *; }
+-keep class com.google.android.gms.signin.** { *; }
+-keep class com.google.android.gms.dynamic.** { *; }
+-keep class com.google.android.gms.dynamite.** { *; }
+-keep class com.google.android.gms.tasks.** { *; }
+-keep class com.google.android.gms.security.** { *; }
+-keep class com.google.android.gms.base.** { *; }
+-keep class com.google.android.gms.actions.** { *; }
+-keep class com.google.games.bridge.** { *; }
+-keep class com.google.android.gms.common.ConnectionResult { *; }
+-keep class com.google.android.gms.common.GooglePlayServicesUtil { *; }
+-keep class com.google.android.gms.common.api.** { *; }
+-keep class com.google.android.gms.common.data.DataBufferUtils { *; }
+-keep class com.google.android.gms.games.quest.** { *; }
+-keep class com.google.android.gms.nearby.** { *; }
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="에셋-유료"><a class="header" href="#에셋-유료">에셋-유료</a></h1>
 <p>유료 에셋 모음집</p>
 <ul>
@@ -1797,7 +2264,7 @@ https://www.amazon.com/dp/0133046850/ref=cm_sw_r_cp_awdb_l5R.ybCQE0NQR</p>
 </li>
 <li><a href="https://www.audiokinetic.com/ko/">Wwise</a></li>
 </ul>
-<h2 id="ref-3"><a class="header" href="#ref-3">Ref</a></h2>
+<h2 id="ref-5"><a class="header" href="#ref-5">Ref</a></h2>
 <ul>
 <li><a href="https://danikog.github.io/GameAudioTable/">https://danikog.github.io/GameAudioTable/</a></li>
 </ul>
@@ -1879,7 +2346,7 @@ event.Play();
 <tr><td></td><td></td><td></td></tr>
 </tbody></table>
 </div>
-<h2 id="ref-4"><a class="header" href="#ref-4">Ref</a></h2>
+<h2 id="ref-6"><a class="header" href="#ref-6">Ref</a></h2>
 <ul>
 <li><a href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/nullable-warnings">Resolve nullable warnings</a></li>
 </ul>
@@ -1906,6 +2373,34 @@ event.Play();
 -nullable:enable
 -warn:4
 -warnaserror+
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="디펜더-설정"><a class="header" href="#디펜더-설정">디펜더 설정</a></h2>
+<p>Exclusions to Windows Defender Security</p>
+<ul>
+<li>https://baba-s.hatenablog.com/entry/2022/06/28/090000</li>
+</ul>
+<h3 id="process"><a class="header" href="#process">Process</a></h3>
+<pre><code class="language-txt">Unity.exe
+Unity Hub.exe
+unity-accelerator.exe
+Unity.Licensing.Client.exe
+UnityCrashHandler64.exe
+UnityPackageManager.exe
+UnityShaderCompiler.exe
+PVRTexTool.exe
+PVRTexToolCLI.exe
+</code></pre>
+<h3 id="folder"><a class="header" href="#folder">Folder</a></h3>
+<pre><code class="language-txt">C:\Program Files\Unity
+C:\Program Files\Unity Hub
+C:\Users\[사용자 이름]\AppData\Local\Unity
+C:\Users\[사용자 이름]\AppData\Local\UnityAccelerator
+C:\Users\[사용자 이름]\AppData\Local\unity-accelerator-app-updater
+C:\Users\[사용자 이름]\AppData\Local\Programs\unity-accelerator-app
+C:\Users\[사용자 이름]\AppData\Roaming\Unity
+C:\Users\[사용자 이름]\AppData\Roaming\unity-accelerator-app
+C:\Users\[사용자 이름]\AppData\Roaming\UnityHub
+[프로젝트 폴더]
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="adb"><a class="header" href="#adb">ADB</a></h1>
 <ul>

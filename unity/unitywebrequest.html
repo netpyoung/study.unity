@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>csc.rsp - 넷평의 Unity 노트</title>
+        <title>UnityWebRequest - 넷평의 Unity 노트</title>
 
 
         <!-- Custom HTML head -->
@@ -130,7 +130,7 @@
                         <a href="https://github.com/netpyoung/study.unity" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        <a href="https://github.com/netpyoung/study.unity/edit/main/src/etc/csc.md" title="Suggest an edit" aria-label="Suggest an edit">
+                        <a href="https://github.com/netpyoung/study.unity/edit/main/src/unity/unitywebrequest.md" title="Suggest an edit" aria-label="Suggest an edit">
                             <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
 
@@ -159,40 +159,53 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="cscrsp"><a class="header" href="#cscrsp">csc.rsp</a></h1>
+                        <h1 id="unitywebrequest"><a class="header" href="#unitywebrequest">UnityWebRequest</a></h1>
+<p>UnityWebRequest.Get
+return new UnityWebRequest(uri, "GET", new DownloadHandlerBuffer(), null);</p>
 <ul>
-<li>
-<p>ref: <a href="./compile-warning.html">compile-warning</a></p>
-</li>
-<li>
-<p><a href="https://github.com/mob-sakai/CSharpCompilerSettingsForUnity">https://github.com/mob-sakai/CSharpCompilerSettingsForUnity</a></p>
-</li>
-<li>
-<p><a href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/miscellaneous">https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/miscellaneous</a></p>
+<li>Abort()
 <ul>
-<li><a href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/errors-warnings">https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/errors-warnings</a></li>
+<li>호출하면 요청이 즉시 취소되고, 요청의 상태가 isDone = true로 설정되면서 콜백도 정상적으로 종료.</li>
 </ul>
 </li>
-<li>
-<p><a href="https://github.com/dotnet/roslyn/blob/main/src/Compilers/CSharp/csc/csc.rsp">https://github.com/dotnet/roslyn/blob/main/src/Compilers/CSharp/csc/csc.rsp</a></p>
+</ul>
+<h2 id="downloadprogress"><a class="header" href="#downloadprogress">downloadProgress</a></h2>
+<ul>
+<li><a href="https://docs.unity3d.com/ScriptReference/Networking.UnityWebRequest-downloadProgress.html">https://docs.unity3d.com/ScriptReference/Networking.UnityWebRequest-downloadProgress.html</a>
+<ul>
+<li>Send전에는 : -1</li>
+<li>성공/실패 : 1</li>
+<li>통신중
+<ul>
+<li>(downloadHandler == null) : 0.5 고정</li>
+<li>downloadHandler.GetProgress()</li>
+</ul>
 </li>
 </ul>
-<pre><code class="language-txt"># file: csc.rsp
-
--nullable:enable
--warn:4
--warnaserror+
-</code></pre>
+</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>UnityWebRequest.Result</th><th></th></tr></thead><tbody>
+<tr><td>Success</td><td>요청이 성공했습니다.</td></tr>
+<tr><td>InProgress</td><td>요청이 아직 완료되지 않았습니다.</td></tr>
+<tr><td>ConnectionError</td><td>서버와의 통신에 실패했습니다. (연결할 수 없거나 / 보안 채널을 설정할 수 없었습니다.)</td></tr>
+<tr><td>ProtocolError</td><td>서버와의 통신은 성공했지만, 연결 프로토콜에 정의된 오류를 받았습니다.</td></tr>
+<tr><td>DataProcessingError</td><td>서버와의 통신은 성공했지만, 받은 데이터를 처리하는 과정에서 오류가 발생했습니다.</td></tr>
+</tbody></table>
+</div>
+<h2 id="ref"><a class="header" href="#ref">Ref</a></h2>
+<ul>
+<li><a href="https://qiita.com/su10/items/538e39a2a2cd84dc032b">【Unity】UnityWebRequestの詳細なエラー内容で処理を分岐する方法</a></li>
+</ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../etc/compile-warning.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../unity/ugui.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../etc/WindowsSetting.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../thirdparty/unitask.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -202,11 +215,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../etc/compile-warning.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../unity/ugui.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../etc/WindowsSetting.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../thirdparty/unitask.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

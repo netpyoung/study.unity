@@ -1,0 +1,447 @@
+<!DOCTYPE HTML>
+<html lang="kr" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>dot - 넷평의 Unity 노트</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="study.unity">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">넷평의 Unity 노트</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/netpyoung/study.unity" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/netpyoung/study.unity/edit/main/src/dots/dots-ecs.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="dots"><a class="header" href="#dots">Dots</a></h2>
+<ul>
+<li>
+<p><code>D</code>ata <code>O</code>riented <code>T</code>echnology <code>S</code>tack</p>
+</li>
+<li>
+<p>https://unity.com/resources/introduction-to-dots-ebook</p>
+</li>
+<li>
+<p>Loadmap https://unity.com/roadmap/unity-platform/dots</p>
+<ul>
+<li>https://docs.unity3d.com/Packages/com.unity.entities@1.3/manual/index.html</li>
+<li>https://docs.unity3d.com/Packages/com.unity.entities.graphics@1.4/manual/index.html</li>
+<li>https://docs.unity3d.com/Packages/com.unity.physics@1.3/manual/index.html</li>
+<li>https://docs.unity3d.com/Packages/com.unity.charactercontroller@1.2/manual/index.html</li>
+</ul>
+</li>
+</ul>
+<p>https://learn.unity.com/project/basics-dots-jobs-entities
+https://learn.unity.com/course/dots-best-practices
+https://github.com/Unity-Technologies/EntityComponentSystemSamples</p>
+<p>Entities.ForEach() relies on a large amount of automatic code generation which significantly slows down iteration speeds on a project. This automatic code-gen also introduces a number of unintuitive edge-cases in which unexpected behavior might occur. Idiomatic foreach is a cleaner, more intuitive interface for iterating over components on the main thread, and IJobEntity / IJobChunk are more explicit ways to express your desired behavior when multithreading is required.</p>
+<h2 id="burst"><a class="header" href="#burst">Burst</a></h2>
+<ul>
+<li>Burst uses a high performance subset of C# called High Performance C# (HPC#).
+<ul>
+<li>https://docs.unity3d.com/Packages/com.unity.burst@1.8/manual/csharp-hpc-overview.html</li>
+<li>https://docs.unity3d.com/Packages/com.unity.burst@1.8/manual/docs/Presentations.html</li>
+</ul>
+</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th></th><th></th></tr></thead><tbody>
+<tr><td>Unity.Entities</td><td></td></tr>
+<tr><td>Unity.Collections</td><td></td></tr>
+<tr><td>Unity.Entities.Hybrid</td><td><code>Baker</code></td></tr>
+<tr><td>Unity.Burst</td><td><code>[BurstCompile] </code></td></tr>
+<tr><td>Unity.Transforms</td><td><code>LocalTransform </code></td></tr>
+<tr><td>Unity.Mathematics</td><td><code>float3</code></td></tr>
+<tr><td>Unity.Physics</td><td><code>PhysicsVelocity</code></td></tr>
+</tbody></table>
+</div>
+<p>Edit &gt; Project Settings &gt; Editor menu, and enable the Enter Play Mode Options setting, but leave the Reload Domain and Reload Scene boxes disabled.</p>
+<h2 id="authoring-작성---제작"><a class="header" href="#authoring-작성---제작">Authoring "작성" - "제작"</a></h2>
+<ul>
+<li>Baker는 에디터에서만 실행되고 런타임 시에는 생성된 엔티티 데이터만 사용됩니다.</li>
+<li>Authoring이란, MonoBehaviour와 GameObject 기반의 데이터를 ECS의 엔티티 데이터로 변환하는 과정</li>
+</ul>
+<p><code>MonoBehaviour =&gt; Baker =Authoring=&gt; entity</code></p>
+<pre><code class="language-cs">public class MyAuthoring : MonoBehaviour
+{
+    public int Value;
+}
+
+public struct MyComponent : IComponentData
+{
+    public int Value;
+    public float3 Position;
+}
+
+public class MyBaker : Baker&lt;MyAuthoring&gt;
+{
+    public override void Bake(MyAuthoring authoring)
+    {
+      Entity entity = GetEntity(TransformUsageFlags.Dynamic);  // 런타임에 필요한 변환 데이터만 포함하도록 최적화합니다
+      AddComponent(entity, new MyAuthoring
+</code></pre>
+<p>[Flags]
+public enum TransformUsageFlags
+{
+None = 0,
+Renderable = 1,
+Dynamic = 2,
+WorldSpace = 4,
+NonUniformScale = 8,
+ManualOverride = 0x10
+}</p>
+<div class="table-wrapper"><table><thead><tr><th></th><th></th></tr></thead><tbody>
+<tr><td>Dynamic</td><td>런타임에서 움직이기 위해 LocalTransform과 LocalToWorld를 필요로 하는 엔티티.</td></tr>
+<tr><td>ManualOverride</td><td>변환 과정을 수동으로 제어하고 싶을 때 사용.</td></tr>
+<tr><td>NonUniformScale</td><td>비균일 스케일(축마다 다른 스케일)이 필요한 엔티티.</td></tr>
+<tr><td>None</td><td>해당 엔티티에 Transform 컴포넌트가 필요 없을 때 사용.</td></tr>
+<tr><td>Renderable</td><td>엔티티가 렌더링되도록 LocalToWorld만 필요할 때 사용. 이동 관련 컴포넌트는 포함되지 않음.</td></tr>
+<tr><td>WorldSpace</td><td>엔티티가 월드 좌표계에서 동작해야 할 때 사용. Dynamic 부모 관계에 영향을 받지 않음.</td></tr>
+</tbody></table>
+</div>
+<h2 id="system"><a class="header" href="#system">System</a></h2>
+<p>만들어두면 따로 등록하거나 할 필요없이 동작함.</p>
+<p><code>[ReadOnly]</code> https://docs.unity3d.com/ScriptReference/Unity.Collections.ReadOnlyAttribute.html</p>
+<div class="table-wrapper"><table><thead><tr><th></th><th></th></tr></thead><tbody>
+<tr><td>RefRO</td><td>RefRW</td></tr>
+<tr><td>EnableableRefRO</td><td>EnableableRefRW</td></tr>
+</tbody></table>
+</div>
+<p>/// RefRW Read/Write stores a reference (with write access) to native memory
+//  RefRO ReadOnly</p>
+<pre><code class="language-cs">
+// [BurstCompile]을 트리거삼아 로슬린 컴파일 때문에 partial struct
+public partial struct UnitMoverSystem : ISystem
+{
+    [BurstCompile]
+    public void OnUpdate(ref SystemState state)
+    {
+        foreach (RefRW&lt;LocalTransform&gt; localTransform in SystemAPI.Query&lt;RefRW&lt;LocalTransform&gt;&gt;())
+        {
+            localTransform.ValueRW.Position = localTransform.ValueRO.Position + new float3(1, 0, 0) * SystemAPI.Time.DeltaTime;
+        }
+    }
+}
+</code></pre>
+<pre><code class="language-cs">// job에는 Execute 메서드가 필수.
+
+[BurstCompile]
+public partial struct UnitMover_Job : IJobEntity
+{
+    public void Execute(in UnitMover_Comp comp, ref LocalTransform localTransform, ref PhysicsVelocity physicsVelocity)
+}
+
+
+public partial struct UnitMoverSystem : ISystem
+{
+    [BurstCompile]
+    public void OnUpdate(ref SystemState state)
+    {
+        Job job = new Job();
+        job.ScheduleParallel() // or job.Run();
+</code></pre>
+<h2 id=""><a class="header" href="#"></a></h2>
+<pre><code class="language-cs">void Update()
+{
+    if (Input.GetMouseButtonDown(1))
+    {
+        Vector3 mouseWorldPosition = GoMouseWorld.Instance.GetPosition();
+
+        World world = World.DefaultGameObjectInjectionWorld;
+        EntityManager manager = world.EntityManager;
+        EntityQuery query = new EntityQueryBuilder(Allocator.Temp).WithAll&lt;UnitMover_Comp&gt;().Build(manager);
+        NativeArray&lt;Entity&gt; entityArr = query.ToEntityArray(Allocator.Temp);
+        NativeArray&lt;UnitMover_Comp&gt; arr = query.ToComponentDataArray&lt;UnitMover_Comp&gt;(Allocator.Temp);
+        for (int i = 0; i &lt; arr.Length; ++i)
+        {
+            UnitMover_Comp comp = arr[i];
+            Entity e = entityArr[i];
+            comp.TargetPosition = mouseWorldPosition;
+            manager.SetComponentData(e, comp);
+        }
+    }
+}
+</code></pre>
+<h2 id="-1"><a class="header" href="#-1"></a></h2>
+<p>테그 체크박스</p>
+<pre><code class="language-cs">public struct Selected_Comp : IComponentData, IEnableableComponent
+public override void Bake(Selected_Authoring authoring)
+{
+    Entity entity = GetEntity(TransformUsageFlags.Dynamic);
+    SetComponentEnabled&lt;Selected_Comp&gt;(entity, false);
+
+
+SystemAPI.Query&lt;&gt;().WithDisabled&lt;Selected_Comp&gt;()
+SystemAPI.Query&lt;&gt;().WithPresent&lt;Selected_Comp&gt;()
+</code></pre>
+<h2 id="physicsworldsingleton"><a class="header" href="#physicsworldsingleton">PhysicsWorldSingleton</a></h2>
+<pre><code class="language-cs">EntityQuery query = manager.CreateEntityQuery(typeof(PhysicsWorldSingleton));
+PhysicsWorldSingleton physics = query.GetSingleton&lt;PhysicsWorldSingleton&gt;();
+CollisionWorld collision = physics.CollisionWorld;
+
+UnityEngine.Ray mouseCameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+int unitLayer = 6;
+RaycastInput input = new RaycastInput
+{
+    Start = mouseCameraRay.GetPoint(0),
+    End = mouseCameraRay.GetPoint(9999),
+    Filter = new CollisionFilter
+    {
+        BelongsTo = ~0u,
+        CollidesWith = 1u &lt;&lt; unitLayer,
+        GroupIndex = 0,
+    }
+};
+if (collision.CastRay(input, out Unity.Physics.RaycastHit hit))
+{
+    if (manager.HasComponent&lt;UnitMover_Comp&gt;(hit.Entity))
+    {
+        manager.SetComponentEnabled&lt;Selected_Comp&gt;(hit.Entity, true);
+    }
+}
+</code></pre>
+<p>SetComponentEnabled로 컴포넌트를 disable 시 쿼리에서 벗어나게됨</p>
+<pre><code>            query.CopyFromComponentDataArray(arr);
+</code></pre>
+<h2 id="group"><a class="header" href="#group">Group</a></h2>
+<pre><code class="language-cs">[UpdateInGroup(typeof(SimulationSystemGroup), OrderFirst = true)] 
+[UpdateBefore(typeof(BeginSimulationEntityCommandBufferSystem))] 
+public partial class PreSimulationSystemGroup : ComponentSystemGroup { }
+</code></pre>
+<p>UNITY_DISABLE_MANAGED_COMPONENTS
+플레이어 설정 에서 스크립팅 정의 에 UNITY_DISABLE_MANAGED_COMPONENTS 를 추가하여 누군가가 실수로 IComponentData 를 클래스로 선언하는 것을 방지합니다 .</p>
+<h2 id="-2"><a class="header" href="#-2"></a></h2>
+<p>LinkedEntityGroupAuthoring
+entity == Entity.Null검사는 파괴된 엔터티에 대해 작동하지 않습니다</p>
+<h2 id="-3"><a class="header" href="#-3"></a></h2>
+<div class="table-wrapper"><table><thead><tr><th></th></tr></thead><tbody>
+<tr><td>CreateEntity / DestroyEntity</td></tr>
+<tr><td>Instantiate</td></tr>
+<tr><td>AddComponent / RemoveComponent</td></tr>
+<tr><td>GetComponent / SetComponent</td></tr>
+</tbody></table>
+</div><div class="table-wrapper"><table><thead><tr><th>Component</th><th>Description</th></tr></thead><tbody>
+<tr><td>Unmanaged components</td><td>The most common component type, but can only store fields of certain types.</td></tr>
+<tr><td>Managed components</td><td>A managed component type that can store any field type.</td></tr>
+<tr><td>Shared components</td><td>Components that group entities in chunks based on their values.</td></tr>
+<tr><td>Cleanup components</td><td>When you destroy an entity that contains a cleanup component, Unity removes all non-cleanup components. This is useful to tag entities that require cleanup when destroyed.</td></tr>
+<tr><td>Tag components</td><td>An unmanaged component that stores no data and takes up no space. You can use tag components in entity queries to filter entities.</td></tr>
+<tr><td>Buffer components</td><td>A component that acts as a resizable array.</td></tr>
+<tr><td>Chunk components</td><td>A component that stores a value associated with an entire chunk, instead of a single entity.</td></tr>
+<tr><td>Enableable components</td><td>A component that can be enabled or disabled on an entity at runtime, without requiring an expensive structural change.</td></tr>
+<tr><td>Singleton components</td><td>A component that only has one instance in a given world.</td></tr>
+</tbody></table>
+</div>
+<p>Dragon Crashers - UI Toolkit Sample project https://assetstore.unity.com/packages/essentials/tutorial-projects/dragon-crashers-ui-toolkit-sample-project-231178
+QuizU - A UI toolkit sample https://assetstore.unity.com/packages/essentials/tutorial-projects/quizu-a-ui-toolkit-sample-268492?aid=1011l5f3d</p>
+<p>https://docs.unity3d.com/Packages/com.unity.entities@1.3/manual/editor-authoring-runtime.html?q=authoring</p>
+<p>Authoring mode : 버전 제어되는 데이터(예: 자산, 장면 게임 객체)를 포함합니다. 편집기에서 흰색 또는 회색 원으로 표시됩니다.
+Runtime mode : 런타임에서 사용하고 수정하는 데이터를 포함합니다. 예를 들어, Play 모드를 종료할 때 Unity가 파괴하는 데이터 또는 상태입니다. 편집기에서 주황색 또는 빨간색 원으로 표시됩니다.
+Mixed mode: 런타임과 실시간을 모두 볼 수 있는 뷰를 나타냅니다.저술데이터이지만저술데이터가 우선합니다. 편집기에서 흰색과 주황색 또는 회색과 빨간색 원으로 표시됩니다.</p>
+<h2 id="quicksheet"><a class="header" href="#quicksheet">quicksheet</a></h2>
+<p>SystemAPI.Time.DeltaTime
+SystemAPI.Query&lt;&gt;</p>
+<p>Entity e = GetEntity(TransformUsageFlags.Dynamic);
+AddComponent(e, new Comp_A {});
+float3 spawnPos = localTransform.ValueRO.TransformPoint(shootAttack.ValueRO.BulletSpawnLocalPosition);</p>
+<p>DisableRendering
+A tag component that disables the rendering of an entity.</p>
+<p>TransformUsageFlags.NonUniformScale - PostTransformMatrix
+localTransform.ValueRW.Rotation = parentLocalTransform.InverseTransformRotation(quaternion.LookRotation(cameraForward, math.up()));</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../package/package-opensource.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../snippet/snippet.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../package/package-opensource.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../snippet/snippet.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>
