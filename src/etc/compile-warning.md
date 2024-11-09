@@ -4,16 +4,27 @@
 
 | Warning | type     |                                                                                                                                            |
 | ------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| 4014    | async    | Because this call is not awaited                                                                                                           |
-| 1998    | async    | This async method lacks 'await'                                                                                                            |
-| 0219    | unused   | The variable is assigned but its value is never used                                                                                       |
-| 0168    | unused   | The variable is declared but never used                                                                                                    |
-| 0067    | unused   | The event 'event' is never used                                                                                                            |
-| 0414    | unused   | field assigned but value is never used                                                                                                     |
-| 0612    | obsolete | 'member' is obsolete                                                                                                                       |
-| 0618    | obsolete | 'member' is obsolete: 'text'                                                                                                               |
-| 0109    | hides    | does not hide an accessible member. The new keyword is not required.                                                                       |
-| 0108    | hides    | hides inherited member Use the new keyword if hiding was intended.                                                                         |
-| 0114    | hides    | hides inherited member . To make the current member override that implementation, add the override keyword. Otherwise add the new keyword. |
-| 0162    |          | Unreachable code detected                                                                                                                  |
-| 0252    |          | Possible unintended reference comparison; to get a value comparison, cast the left hand side to type 'Object'                              |
+| CS4014  | async    | Because this call is not awaited                                                                                                           |
+| CS1998  | async    | This async method lacks 'await'                                                                                                            |
+| CS0219  | unused   | The variable is assigned but its value is never used                                                                                       |
+| CS0168  | unused   | The variable is declared but never used                                                                                                    |
+| CS0067  | unused   | The event 'event' is never used                                                                                                            |
+| CS0414  | unused   | field assigned but value is never used                                                                                                     |
+| CS0612  | obsolete | 'member' is obsolete                                                                                                                       |
+| CS0618  | obsolete | 'member' is obsolete: 'text'                                                                                                               |
+| CS0109  | hides    | does not hide an accessible member. The new keyword is not required.                                                                       |
+| CS0108  | hides    | hides inherited member Use the new keyword if hiding was intended.                                                                         |
+| CS0114  | hides    | hides inherited member . To make the current member override that implementation, add the override keyword. Otherwise add the new keyword. |
+| CS0162  |          | Unreachable code detected                                                                                                                  |
+| CS0252  |          | Possible unintended reference comparison; to get a value comparison, cast the left hand side to type 'Object'                              |
+
+
+| Warning                                                                                                                                                | type |                                       |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------ | ---- | ------------------------------------- |
+| [CS8618](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/nullable-warnings#nonnullable-reference-not-initialized) | null | Nonnullable reference not initialized |
+|                                                                                                                                                        |      |                                       |
+
+
+## Ref
+
+- [Resolve nullable warnings](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/nullable-warnings)
