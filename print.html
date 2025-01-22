@@ -2254,27 +2254,88 @@ ColorUtility.TryParseHtmlString("#7F7E83FF", out setColor);
 </tbody></table>
 </div><div style="break-before: page; page-break-before: always;"></div><h1 id="audio"><a class="header" href="#audio">Audio</a></h1>
 <ul>
-<li><a href="asset/audio/./fmod.html">FMOD</a></li>
-<li><a href="https://www.tazman-audio.co.uk/software">Fabric</a></li>
+<li>
+<p>유료 에셋</p>
+<ul>
 <li><a href="https://assetstore.unity.com/publishers/2178">Master Audio: AAA Sound</a>
 <ul>
 <li><a href="https://www.dtdevtools.com/docs/masteraudio/TOC.htm">문서</a></li>
 <li><a href="https://www.youtube.com/watch?v=TXuhjYoVGOg">사운드 관리의 마스터피스🔉Master Audio:AAASound [유니티 에셋 A13]</a></li>
+<li>년도별 버전업하면서 과금해야함.</li>
 </ul>
 </li>
-<li><a href="https://www.audiokinetic.com/ko/">Wwise</a></li>
+<li><a href="https://assetstore.unity.com/packages/tools/audio/sonity-audio-middleware-229857">Sonity - Audio Middleware</a>
+<ul>
+<li><a href="https://sonityaudio.github.io/">문서</a></li>
+</ul>
+</li>
+<li><a href="https://assetstore-fallback.unity.com/packages/tools/audio/sound-xr-core-252942">Sound xR Core</a></li>
+</ul>
+</li>
+<li>
+<p>무료 에셋</p>
+<ul>
+<li><a href="https://assetstore.unity.com/packages/tools/audio/bro-audio-257362">Bro Audio</a>
+<ul>
+<li><a href="https://man572142s-organization.gitbook.io/broaudio">문서</a></li>
+<li><a href="https://github.com/man572142/Bro_Audio/">https://github.com/man572142/Bro_Audio/</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>AAA</p>
+<ul>
+<li><a href="asset/audio/./fmod.html">FMOD</a>
+<ul>
+<li><a href="https://www.fmod.com/licensing">price</a></li>
+<li>무료
+<ul>
+<li>개발 예산 60만달러(6억원) 미만</li>
+<li>연간 수익이 20만달러(2억원) 미만</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="https://www.audiokinetic.com/ko/">Wwise</a>
+<ul>
+<li><a href="https://www.audiokinetic.com/en/wwise/pricing/for-games/?asia=#wwise_commercial_pricing">price</a></li>
+<li>무료
+<ul>
+<li>개발 예산 $250K(2억5천만원) 아레</li>
+</ul>
+</li>
+<li>플랫폼 추가시마다 과금해야함.</li>
+</ul>
+</li>
+<li><a href="https://www.tazman-audio.co.uk/software">Fabric</a></li>
+</ul>
+</li>
 </ul>
 <h2 id="ref-5"><a class="header" href="#ref-5">Ref</a></h2>
 <ul>
 <li><a href="https://danikog.github.io/GameAudioTable/">https://danikog.github.io/GameAudioTable/</a></li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="fmod"><a class="header" href="#fmod">fmod</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="fmod"><a class="header" href="#fmod">FMOD</a></h1>
 <ul>
 <li>
 <p><a href="https://www.fmod.com/">fmod</a></p>
+<ul>
+<li>FMOD는 Firelight Technologies Pty Ltd 사의 Adaptive Audio(게임 속 환경에 따라 변화하는 오디오) 처리 라이브러리</li>
+<li><a href="https://www.fmod.com/licensing">licencing</a></li>
+</ul>
 </li>
 <li>
 <p><a href="https://www.slideshare.net/devcatpublications/ndc2010-fmod-4335542">장용석, fmod를이용한사운드프로그래밍, NDC2010</a></p>
+</li>
+<li>
+<p><a href="https://www.youtube.com/watch?v=4-nQB1qrhoE">유니티 FMOD를 통한 적응형 배경음악 만들기 - FMOD Studio로 전환하기</a></p>
+</li>
+<li>
+<p>FMOD for Unity</p>
+<ul>
+<li>https://assetstore.unity.com/packages/tools/audio/fmod-for-unity-161631</li>
+</ul>
 </li>
 <li>
 <p>이벤트 기반</p>
@@ -2319,12 +2380,288 @@ EventObj event = EventSystem.GetEvent("footstep");
 event.SetPosition(groundType);
 event.Play();
 </code></pre>
-<div class="table-wrapper"><table><thead><tr><th></th><th></th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Legacy</th><th></th></tr></thead><tbody>
 <tr><td>FMOD Ex</td><td>low level api</td></tr>
 <tr><td>FMOD Event System</td><td>FMOD Ex 상위 레이어, FMOD Designer로 제작된 데이터 재생</td></tr>
 <tr><td>FMOD Designer</td><td>에디터</td></tr>
 </tbody></table>
-</div><div style="break-before: page; page-break-before: always;"></div><h1 id="컴파일-경고"><a class="header" href="#컴파일-경고">컴파일 경고</a></h1>
+</div><div class="table-wrapper"><table><thead><tr><th>탭</th><th></th></tr></thead><tbody>
+<tr><td>Events</td><td>삽입된 소스로 적응형 오디오의 로직(리버브 효과, 소리 전환, BGM 루프 등)을 설계하는 곳</td></tr>
+<tr><td>Banks</td><td>비슷한 성격의 Event 집합. 나중에 빌드(F7)를 통해 유니티 프로젝트와 직접적인 상호작용을 하는 곳</td></tr>
+<tr><td>Assets</td><td>.wav, .ogg, .mp3 와 같은 오디오 소스 파일을 삽입하는 곳</td></tr>
+</tbody></table>
+</div>
+<pre><code class="language-txt"># .gitignore
+# https://github.com/fmod/fmod-for-unity/blob/master/.gitignore
+
+# FMOD files
+Assets/Plugins/FMOD/Resources/FMODStudioCache.asset
+Assets/StreamingAssets/*.bank
+fmod_editor.log
+</code></pre>
+<h2 id="fmod-studio"><a class="header" href="#fmod-studio">FMOD Studio</a></h2>
+<ul>
+<li>FMOD Studio https://www.fmod.com/download#fmodstudio</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th></th><th></th></tr></thead><tbody>
+<tr><td>{project}.fspro</td><td><code>F</code>MOD <code>S</code>tudio <code>Pro</code>ject</td></tr>
+<tr><td>Asset/</td><td>오디오 파일들</td></tr>
+<tr><td>Metadata/</td><td>mofd 설정</td></tr>
+<tr><td>Build/</td><td>빌드된 뱅크파일들</td></tr>
+<tr><td>.cache/</td><td>ignore</td></tr>
+<tr><td>.unsaved/</td><td>ignore</td></tr>
+<tr><td>.user/</td><td>ignore. 사용자 설정</td></tr>
+</tbody></table>
+</div>
+<p>.user/Metadata/Asset/{guid}.user.xml =&gt; Metadata/Asset/{guid}.xml</p>
+<pre><code>&lt;object class="MasterAssetFolder" id="{guid}"&gt;
+	&lt;property name="assetDirectory"&gt;
+		&lt;value&gt;../AnotherMasterAsset&lt;/value&gt;
+	&lt;/property&gt;
+&lt;/object&gt;
+</code></pre>
+<h2 id="unity-integration"><a class="header" href="#unity-integration">unity Integration</a></h2>
+<pre><code class="language-cs">FMODUnity.RuntimeManager.PlayOneShot(strKey, value);
+
+StudioEventEmitter : MonoBehaviour
+ 
+StudioEventEmitter emitter;
+emitter.SetParameter(strKey, value);
+emitter.EventInstance.setVolume(volume);
+
+// Events에걸 Banks에 끌어다 넣을 수 있다.
+// 플레이시 "event:/{banks에서 나온 이름 그대로}"
+[SerializableField]
+[FMODUnity.EventRef]
+private string _eventKey;
+
+
+
+EventReference fmodEvent;
+EventInstance eventInstance = RuntimeManager.CreateInstance(fmodEvent);      
+eventInstance.getDescription(out EventDescription eventDescription;);
+eventDescription.getMarkerList(out Marker[] markers);
+eventInstance.setTimelinePosition(marker.position);
+eventInstance.release();
+</code></pre>
+<h2 id="scripting"><a class="header" href="#scripting">Scripting</a></h2>
+<ul>
+<li><a href="https://www.fmod.com/docs/2.00/studio/scripting-terminal-reference.html">https://www.fmod.com/docs/2.00/studio/scripting-terminal-reference.html</a></li>
+<li><a href="https://github.com/michaelhartung/fmod-types">https://github.com/michaelhartung/fmod-types</a></li>
+</ul>
+<h2 id="getting-started-in-fmod"><a class="header" href="#getting-started-in-fmod"><a href="https://www.youtube.com/playlist?list=PLp4vT3ssm5SUgEJpDeA0Nb-1BKGxnDu2m">Getting Started in FMOD</a></a></h2>
+<ul>
+<li>Episode 1 - FMOD Basics</li>
+<li>Episode 2 Part 1 - Events</li>
+<li>Episode 2 Part 2 - Sheets</li>
+<li>Episode 3 - Instruments
+<ul>
+<li>타임라인 시트에 Multi Instruments로 렌덤 음악플레이</li>
+</ul>
+</li>
+<li>Episode 4 - Logic Tracks
+<ul>
+<li>Timeline
+<ul>
+<li>Tempo</li>
+<li>Destination</li>
+<li>Loop</li>
+<li>Transition
+<ul>
+<li>컨디션 지정가능</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Episode 5 - Parameters
+<ul>
+<li>Parameter
+<ul>
+<li>Continuous (연속)</li>
+<li>Discrete (불연속, 이산)
+<ul>
+<li>상태 변수로 사용함 int</li>
+</ul>
+</li>
+<li>Labbeled
+<ul>
+<li>상태 변수로 사용함 string</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Timeline
+<ul>
+<li>Sound
+<ul>
+<li>Cut 하면 타임라인 이동시 재생 중지.</li>
+<li>Cut 안하면 타임라인 이동시에도 재생.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Timeline Audio Volume에 우클릭해서 Automation추가 가능
+<ul>
+<li>밤낮 페이드인아웃효과</li>
+</ul>
+</li>
+<li>Transition Region
+<ul>
+<li>quantization 양자화 - 템포간격에 맞춤</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Episode 6 - Banks</li>
+</ul>
+<pre><code class="language-cs">// Setting random seed
+// ref: https://qa.fmod.com/t/setting-random-seed/11650
+
+FMOD.ADVANCEDSETTINGS advancedsettings = new FMOD.ADVANCEDSETTINGS();
+long seed = global::System.DateTime.Now.ToBinary();
+advancedsettings.randomSeed = ((uint)seed) ^ ((uint)(seed &gt;&gt; 32));
+FMOD.System lowlevel;
+ERRCHECK(system.getLowLevelSystem(out lowlevel));
+ERRCHECK(lowlevel.setAdvancedSettings(ref advancedsettings));
+</code></pre>
+<p>snapshot ??</p>
+<p>midi =&gt; fmod ???</p>
+<p>Volume은 상대적인 크기를 0.0 ~ 1.0 범위로 표현하며, 사용자가 직관적으로 볼륨을 조절할 때 주로 사용됩니다.
+Gain은 절대적인 크기 조절을 위한 매개변수로, 주로 데시벨(dB)로 세밀하게 조정됩니다.</p>
+<p>Alt + Mouse Wheel 줌 인/아웃
+Windows -&gt; Audio Bin Ctrl + 3
+Windows -&gt; Preset Browser Ctrl + 8 - Parameters/Effects
+Windows -&gt; Sandbox  Ctrl + 7</p>
+<ul>
+<li>Effect
+<ul>
+<li>spatializer 공간화 효과
+<ul>
+<li>Distance Attenuation 거리 감쇠</li>
+<li>Min &amp; Max Distance 거리 감쇠 범위</li>
+<li>Envelopment
+<ul>
+<li>Auto</li>
+<li>User
+<ul>
+<li>Sound Size 소리가 들리는 거리</li>
+<li>Min Extend 소리를 들을 수 있는 각도</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Event Macros
+<ul>
+<li>Max Instances 동시 소리 갯수</li>
+<li>Stealing
+<ul>
+<li>Oldest 시간상 가장 이전의 출력된 것(동일 Event)을 정지시키고 새로 발생한 것을 재생</li>
+<li>Quietest 거리상 감쇠 효과를 고려하여 가장 작은 음량의 이벤트를 정지하고 새로 발생한 이벤트를 재생</li>
+<li>Virtualize Quietest와 동일하나 가상화하여 소리는 안 들릴지라도 Event 동작은 지속</li>
+<li>Furthest 직접적인 거리만을 고려하여 가장 작은 음량의 이벤트를 정지하고 새로 발생한 이벤트를 재생</li>
+</ul>
+</li>
+<li>Cooldown 동일 이벤트 무시</li>
+<li>Persistent 이벤트 진행 멈춤 방지</li>
+<li>Doppler 도플러 효과
+<ul>
+<li><a href="https://www.youtube.com/watch?v=Be7PNN9G1UM">Bending Sound - Doppler in FMOD</a></li>
+<li>Doppler Scale</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Output 에 우클릭
+<ul>
+<li>Mono 하나의 채널로 녹음되어 들리며, 공간감이 없다</li>
+<li>Stereo 두 개 이상의 채널로 녹음되어 좌우로 나뉘어 공간감이 있다.</li>
+</ul>
+</li>
+</ul>
+<p>lufs Loudness Unit Relative to Full Scale
+-24 ~ -20 Lufs</p>
+<ul>
+<li>
+<p>Encoding Format</p>
+<ul>
+<li>Vorbis - Ogg</li>
+<li>PADPCM 압축 형식으로 대략적으로 원본 대비 1/4</li>
+<li>PCM 비압축</li>
+</ul>
+</li>
+<li>
+<p>Advanced Loading Mode</p>
+<ul>
+<li>Compressed</li>
+<li>Decompressed</li>
+<li>Streaming</li>
+</ul>
+</li>
+<li>
+<p>Sample Rate Mode</p>
+<ul>
+<li>Optimized</li>
+<li>Pressed</li>
+</ul>
+</li>
+<li>
+<p>Sound</p>
+<ul>
+<li>Async 루프시 끊기더라도 마지막까지 플레이
+<ul>
+<li>https://www.fmod.com/docs/2.03/studio/working-with-instruments.html#synchronous-and-asynchronous-instruments</li>
+</ul>
+</li>
+<li>Cut Async라도 끊기면 멈추게
+<ul>
+<li>https://www.fmod.com/docs/2.03/studio/working-with-instruments.html#cut</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>AHDSR</p>
+<ul>
+<li><code>A</code>ttack, <code>H</code>old, <code>D</code>ecay, <code>S</code>ustain, <code>R</code>elease</li>
+</ul>
+</li>
+<li>
+<p>LFO</p>
+<ul>
+<li><code>L</code>ow <code>F</code>requency <code>O</code>scillator</li>
+</ul>
+</li>
+<li>
+<p>Built In Parameter</p>
+<ul>
+<li>Distance</li>
+<li>Direction
+<ul>
+<li>좌 -180   180 우</li>
+</ul>
+</li>
+<li>Elevations
+<ul>
+<li>하 -90 90 상</li>
+</ul>
+</li>
+<li>Event Cone Angle</li>
+<li>Orientation</li>
+<li>Speed</li>
+</ul>
+</li>
+</ul>
+<p>Sustain Point, Keyoff
+Sustain: 지속시키다</p>
+<p>Mixer ??</p>
+<p>VCA: <code>V</code>oltage <code>C</code>ontrolled <code>A</code>mplifier</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="컴파일-경고"><a class="header" href="#컴파일-경고">컴파일 경고</a></h1>
 <p>유니티 흔히 보게 되는 경고</p>
 <div class="table-wrapper"><table><thead><tr><th>Warning</th><th>type</th><th></th></tr></thead><tbody>
 <tr><td>CS4014</td><td>async</td><td>Because this call is not awaited</td></tr>
